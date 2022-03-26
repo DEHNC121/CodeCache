@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "CodeCache",
+  "description": "Makes searching easier.",
+  "version": "1.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "54.0a1"
+    }
+  },
+
+  "sidebar_action": {
+    "default_title" : "MyAnnotator",
+    "default_panel": "prompt/prompt.html"
+  },
+
+  "permissions": ["storage", "tabs"],
+
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+C"
+      }
+    }
+  }
+
+}
