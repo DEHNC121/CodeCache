@@ -10,4 +10,11 @@ public class ServerAnswer {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "ServerAnswer{" +
+                "value='" + value + '\'' +
+                '}';
+    }
 }

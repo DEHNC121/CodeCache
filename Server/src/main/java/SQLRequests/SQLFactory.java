@@ -6,9 +6,7 @@ public class SQLFactory {
         answer.setValue(value);
         return answer;
     }
-    public SQLQuestion createQuestion(String value){
-        SQLQuestion question = new SQLQuestion();
-        question.setValue(value);
-        return question;
+    public SQLQuestion createQuestion(){
+        return new SQLQuestion();
     }
 }
