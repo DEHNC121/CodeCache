@@ -1,20 +1,22 @@
 var myWindowId;
 var contentBox = document.querySelector("#content");
-/*
-Make the content box editable as soon as the user mouses over the sidebar.
-*/
-window.addEventListener("mouseover", function () {
+var promptBox = document.querySelector("#prompt");
+var saveButton = document.getElementById("save");
+contentBox.addEventListener("mouseover", function () {
     contentBox.setAttribute("contenteditable", "true");
 });
-/*
-When the user mouses out, save the current contents of the box.
-*/
-window.addEventListener("mouseout", function () {
+promptBox.addEventListener("mouseover", function () {
+    promptBox.setAttribute("contenteditable", "true");
+});
+promptBox.addEventListener("mouseout", function () {
+    promptBox.setAttribute("contenteditable", "false");
+});
+saveButton.addEventListener("click", function () {
     contentBox.setAttribute("contenteditable", "false");
     browser.tabs.query({ windowId: myWindowId, active: true }).then(function (tabs) {
         var contentToStore = {};
         contentToStore[tabs[0].url] = contentBox.textContent;
-        browser.storage.local.set(contentToStore);
+        browser.storage.local.set(contentToStore).then(function () { }, function () { return contentBox.textContent = "set error"; });
     });
 });
 /*
@@ -27,10 +29,11 @@ function updateContent() {
     browser.tabs.query({ windowId: myWindowId, active: true })
         .then(function (tabs) {
         return browser.storage.local.get(tabs[0].url);
-    })
+    }, function () { contentBox.textContent = "updateContext query fail"; return "myNullUrl"; })
         .then(function (storedInfo) {
-        contentBox.textContent = storedInfo[Object.keys(storedInfo)[0]].toString();
-    });
+        contentBox.textContent = storedInfo[Object.keys(storedInfo)[0]].toLocaleString();
+    }, function () { contentBox.textContent = "updateContext storage.local.get fail"; })
+        .then(function () { }, function () { return contentBox.textContent = ""; });
 }
 /*
 Update content when a new tab becomes active.

@@ -1,22 +1,28 @@
 var myWindowId;
 const contentBox = document.querySelector("#content");
+const promptBox = document.querySelector("#prompt");
+const saveButton = document.getElementById("save");
 
-/*
-Make the content box editable as soon as the user mouses over the sidebar.
-*/
-window.addEventListener("mouseover", () => {
+
+
+contentBox.addEventListener("mouseover", () => {
     contentBox.setAttribute("contenteditable", "true");
 });
 
-/*
-When the user mouses out, save the current contents of the box.
-*/
-window.addEventListener("mouseout", () => {
+promptBox.addEventListener("mouseover", () => {
+    promptBox.setAttribute("contenteditable", "true");
+});
+
+promptBox.addEventListener("mouseout", () => {
+    promptBox.setAttribute("contenteditable", "false");
+});
+
+saveButton.addEventListener("click", () => {
     contentBox.setAttribute("contenteditable", "false");
     browser.tabs.query({windowId: myWindowId, active: true}).then((tabs) => {
         let contentToStore = {};
         contentToStore[tabs[0].url] = contentBox.textContent;
-        browser.storage.local.set(contentToStore);
+        browser.storage.local.set(contentToStore).then(() => {}, () => contentBox.textContent = "set error");
     });
 });
 
@@ -30,11 +36,13 @@ function updateContent() {
     browser.tabs.query({windowId: myWindowId, active: true})
         .then((tabs) => {
             return browser.storage.local.get(tabs[0].url);
-        })
+        }, () => {contentBox.textContent = "updateContext query fail"; return "myNullUrl"})
         .then((storedInfo) => {
-            contentBox.textContent = storedInfo[Object.keys(storedInfo)[0]].toString();
-        });
+            contentBox.textContent = storedInfo[Object.keys(storedInfo)[0]].toLocaleString();
+        }, () => {contentBox.textContent = "updateContext storage.local.get fail";} )
+        .then(() => {}, () => contentBox.textContent = "");
 }
+
 
 /*
 Update content when a new tab becomes active.

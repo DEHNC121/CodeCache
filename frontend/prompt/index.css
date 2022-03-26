@@ -15,15 +15,36 @@ p {
     margin: 1em 2em;
 }
 
+#save {
+    width: 60px;
+    margin: 2em;
+    align-self: center;
+    text-align: center;
+}
+
+#prompt {
+    float: top;
+    height: 10%;
+    margin: 2em 2em 0 2em;
+    border: .5em solid #DDE4E9;
+    transition: background-color .2s ease-out;
+}
+
+#prompt[contenteditable=true] {
+    background-color: cadetblue;
+    transition: background-color .2s ease-in;
+}
+
 #content {
-    height: 90%;
+    float: bottom;
+    height: 60%;
     margin: 2em 2em 0 2em;
     border: .5em solid #DDE4E9;
     transition: background-color .2s ease-out;
 }
 
 #content[contenteditable=true] {
-    background-color: gray;
+    background-color: rosybrown;
     transition: background-color .2s ease-in;
 }
 
