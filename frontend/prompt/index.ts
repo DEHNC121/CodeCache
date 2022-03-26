@@ -4,21 +4,23 @@ const promptBox = document.querySelector("#prompt");
 const saveButton = document.getElementById("save");
 
 
-
+/* set mouse movement events */
 contentBox.addEventListener("mouseover", () => {
     contentBox.setAttribute("contenteditable", "true");
+});
+contentBox.addEventListener("mouseout", () => {
+    contentBox.setAttribute("contenteditable", "false");
 });
 
 promptBox.addEventListener("mouseover", () => {
     promptBox.setAttribute("contenteditable", "true");
 });
-
 promptBox.addEventListener("mouseout", () => {
     promptBox.setAttribute("contenteditable", "false");
 });
 
+/* set save button action */
 saveButton.addEventListener("click", () => {
-    contentBox.setAttribute("contenteditable", "false");
     browser.tabs.query({windowId: myWindowId, active: true}).then((tabs) => {
         let contentToStore = {};
         contentToStore[tabs[0].url] = contentBox.textContent;
@@ -55,8 +57,7 @@ Update content when a new page is loaded into a tab.
 browser.tabs.onUpdated.addListener(updateContent);
 
 /*
-When the sidebar loads, get the ID of its window,
-and update its content.
+When the sidebar loads, get the ID of its window and update its content.
 */
 browser.windows.getCurrent({populate: true}).then((windowInfo) => {
     myWindowId = windowInfo.id;
