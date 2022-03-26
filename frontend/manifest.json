@@ -10,8 +10,8 @@
   },
 
   "sidebar_action": {
-    "default_title" : "MyAnnotator",
-    "default_panel": "prompt/prompt.html"
+    "default_title" : "CodeCache",
+    "default_panel": "prompt/index.html"
   },
 
   "permissions": ["storage", "tabs"],
