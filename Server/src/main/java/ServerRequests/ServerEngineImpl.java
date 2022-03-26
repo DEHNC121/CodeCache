@@ -83,16 +83,16 @@ public class ServerEngineImpl implements ServerEngine {
         }
     }
 
-    private List<ServerAnswer> answerFormat(List<SQLQuestionAnswer> inList,ArrayList<Long> order) {
+    private List<ServerAnswer> answerFormat(List<SQLQuestionAnswer> inList, ArrayList<Long> order) {
         var answers = new ArrayList<ServerAnswer>();
 
-        for (var i=0; i<order.size();i++){
+        for (var i = 0; i < order.size(); i++) {
             answers.add(null);
         }
 
         for (var a : inList) {
-            for (var i=0; i<order.size();i++){
-                if (Objects.equals(order.get(i), a.getQuestion().getId())){
+            for (var i = 0; i < order.size(); i++) {
+                if (Objects.equals(order.get(i), a.getQuestion().getId())) {
                     answers.set(i, new ServerAnswer(a.getAnswer().getValue()));
                     break;
                 }
@@ -119,10 +119,10 @@ public class ServerEngineImpl implements ServerEngine {
 
             questionMap.get(id).add(new Keyword(answerKey.getPosition(), answerKey.getKeyword()));
             questionDataMap.get(id).numberUp();
-            System.out.println("Denys up " +id+" "+ answerKey.getKeyword());
+            System.out.println("Denys up " + id + " " + answerKey.getKeyword());
 
         }
-        System.out.println("Denys list " +questionDataMap);
+        System.out.println("Denys list " + questionDataMap);
 
         var answers = new ArrayList<Long>();
 
@@ -130,7 +130,7 @@ public class ServerEngineImpl implements ServerEngine {
             var maxEntry = Collections.max(questionDataMap.entrySet(),
                     Comparator.comparing((var e) -> e.getValue().getNumber()));
 
-            System.out.println("Denys max " +maxEntry);
+            System.out.println("Denys max " + maxEntry);
 
             answers.add(maxEntry.getKey());
             questionDataMap.remove(maxEntry.getKey());
@@ -138,18 +138,8 @@ public class ServerEngineImpl implements ServerEngine {
 
         //todo add positional relevant answers
 
-        return answerFormat(engine.query(answers),answers);
+        return answerFormat(engine.query(answers), answers);
     }
 
 }
-
-
-
-
-
-
-
-
-
-
 
