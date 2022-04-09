@@ -34,6 +34,7 @@ Update the sidebar's content.
 2) Get its stored content.
 3) Put it in the content box.
 */
+
 function updateContent() {
     browser.tabs.query({windowId: myWindowId, active: true})
         .then((tabs) => {
@@ -44,6 +45,7 @@ function updateContent() {
         }, () => {contentBox.textContent = "updateContext storage.local.get fail";} )
         .then(() => {}, () => contentBox.textContent = "");
 }
+
 
 
 /*
@@ -63,3 +65,4 @@ browser.windows.getCurrent({populate: true}).then((windowInfo) => {
     myWindowId = windowInfo.id;
     updateContent();
 });
+
