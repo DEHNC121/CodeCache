@@ -10,10 +10,19 @@ public class SQLQuestion {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "keyword_number", nullable = false)
+    private Long keywordNumber;
+
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
+    }
+    public Long getKeywordCount() {
+        return keywordNumber;
+    }
+    public void setKeywordCount(Long keywordNumber) {
+        this.keywordNumber = keywordNumber;
     }
 }

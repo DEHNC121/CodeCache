@@ -11,7 +11,7 @@ public class SQLAnswer {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "value")
+    @Column(name = "value", unique = true)
     private String value;
 
     public Long getId() {
