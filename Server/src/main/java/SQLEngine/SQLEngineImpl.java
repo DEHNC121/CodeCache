@@ -35,8 +35,8 @@ public class SQLEngineImpl implements SQLEngine {
     //TODO: duplicates
     @Override
     public void add(ServerQuestion q, ServerAnswer a) {
-        SQLQuestion question = sqlFactory.createQuestion();
-        SQLAnswer answer = sqlFactory.createAnswer(a.getValue());
+        SQLQuestion question = sqlFactory.createQuestion(q);
+        SQLAnswer answer = sqlFactory.createAnswer(a);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(question);
