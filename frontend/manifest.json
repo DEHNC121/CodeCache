@@ -1,27 +1,17 @@
 {
+
   "manifest_version": 2,
-  "name": "CodeCache",
-  "description": "Makes searching easier.",
+  "name": "modify-google",
   "version": "1.0",
-  "browser_specific_settings": {
-    "gecko": {
-      "strict_min_version": "54.0a1"
+  "devtools_page": "devtools-page.html",
+
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/*"],
+      "js": ["dist/bundle.js"],
+      "css": ["src/styles.css"]
     }
-  },
-
-  "sidebar_action": {
-    "default_title" : "CodeCache",
-    "default_panel": "prompt/index.html"
-  },
-
-  "permissions": ["storage", "tabs"],
-
-  "commands": {
-    "_execute_sidebar_action": {
-      "suggested_key": {
-        "default": "Ctrl+Alt+C"
-      }
-    }
-  }
+  ]
 
 }
