@@ -2,14 +2,13 @@ package ServerRequests;
 
 import SQLEngine.SQLEngineImpl;
 import SQLRequests.SQLQuestionAnswer;
-import SQLRequests.SQLKeyword;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ServerEngineImpl implements ServerEngine {
 
     SQLEngineImpl engine;
-
 
     public ServerEngineImpl(SQLEngineImpl engine) {
         this.engine = engine;
@@ -18,69 +17,6 @@ public class ServerEngineImpl implements ServerEngine {
     @Override
     public void add(ServerQuestion question, ServerAnswer a) {
         engine.add(question, a);
-    }
-
-    private class Keyword {
-        private Long position;
-        private SQLKeyword keyword;
-
-        public Keyword(Long position, SQLKeyword keyword) {
-            this.position = position;
-            this.keyword = keyword;
-        }
-
-        public void setKeyword(SQLKeyword keyword) {
-            this.keyword = keyword;
-        }
-
-        public SQLKeyword getKeyword() {
-            return keyword;
-        }
-
-        public Long getPosition() {
-            return position;
-        }
-
-        public void setPosition(Long position) {
-            this.position = position;
-        }
-    }
-
-    private class QuestionData {
-        private Long id;
-        private Long number;
-
-        public QuestionData(Long id, Long number) {
-            this.id = id;
-            this.number = number;
-        }
-
-        public void numberUp() {
-            this.number++;
-        }
-
-        public Long getNumber() {
-            return number;
-        }
-
-        public void setNumber(Long number) {
-            this.number = number;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        @Override
-        public String toString() {
-            return "QuestionData{" +
-                    "number=" + number +
-                    '}';
-        }
     }
 
     private List<ServerAnswer> answerFormat(List<SQLQuestionAnswer> inList, ArrayList<Long> order) {
@@ -101,45 +37,42 @@ public class ServerEngineImpl implements ServerEngine {
         return answers;
     }
 
-
     @Override
     public List<ServerAnswer> query(ServerQuestion question) {
-        var questionKeys = question.getKeys();
-        var answerKeys = engine.getKeywords(questionKeys);
+        var dbKeys = engine.getKeywords(question.getKeys());
+        var questionKeywords = question.getKeyWords();
+        var questionKeywordsMap = questionKeywords.stream().collect(Collectors.toMap(ServerKeyword::getKeyword, ServerKeyword::getPosition));
+        var questionDataMap = new HashMap<Long, QuestionCandidate>();
 
-        var questionMap = new HashMap<Long, List<Keyword>>();
-        var questionDataMap = new HashMap<Long, QuestionData>();
-
-        for (var answerKey : answerKeys) {
-            var id = answerKey.getQuestion().getId();
-            if (!questionMap.containsKey(id)) {
-                questionMap.put(id, new ArrayList<Keyword>());
-                questionDataMap.put(id, new QuestionData(id, 0L));
+        // paring SQLQuestionKeywords with serverQuestions with transformation to ServerKeywords
+        for (var dbKey : dbKeys) {
+            var id = dbKey.getQuestion().getId();
+            if (!questionDataMap.containsKey(id)) {
+                questionDataMap.put(id, new QuestionCandidate(id));
             }
-
-            questionMap.get(id).add(new Keyword(answerKey.getPosition(), answerKey.getKeyword()));
-            questionDataMap.get(id).numberUp();
-            System.out.println("Denys up " + id + " " + answerKey.getKeyword());
-
+            questionDataMap.get(id).add(dbKey, questionKeywordsMap.get(dbKey.getKeyword().getValue()));
         }
-        System.out.println("Denys list " + questionDataMap);
+
+        // position scoring serverQuestions
+        for (var serverQuestion : questionDataMap.values()) {
+            serverQuestion.sort();
+            for (int i = 0; i < serverQuestion.getKeywords().size() - 1; i++) {
+                if (serverQuestion.getKeywords().get(i).getPosition() + 1 == serverQuestion.getKeywords().get(i + 1).getPosition()) {
+                    serverQuestion.basicUp(serverQuestion.getKeywords().get(i));
+                }
+            }
+        }
 
         var answers = new ArrayList<Long>();
 
         for (int i = 0; i < 5 && !questionDataMap.isEmpty(); i++) {
-            var maxEntry = Collections.max(questionDataMap.entrySet(),
-                    Comparator.comparing((var e) -> e.getValue().getNumber()));
 
-            System.out.println("Denys max " + maxEntry);
-
+            var maxEntry = Collections.max(questionDataMap.entrySet(), Comparator.comparing((var e) -> e.getValue().getScore()));
             answers.add(maxEntry.getKey());
             questionDataMap.remove(maxEntry.getKey());
         }
-
-        //todo add positional relevant answers
 
         return answerFormat(engine.query(answers), answers);
     }
 
 }
-
