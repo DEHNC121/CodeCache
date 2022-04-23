@@ -10,8 +10,8 @@ public class SQLQuestion {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "value")
-    private String value;
+    @Column(name = "keyword_number", nullable = false)
+    private Long keywordNumber;
 
     public Long getId() {
         return id;
@@ -19,10 +19,10 @@ public class SQLQuestion {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getValue() {
-        return value;
+    public Long getKeywordCount() {
+        return keywordNumber;
     }
-    public void setValue(String value) {
-        this.value = value;
+    public void setKeywordCount(Long keywordNumber) {
+        this.keywordNumber = keywordNumber;
     }
 }

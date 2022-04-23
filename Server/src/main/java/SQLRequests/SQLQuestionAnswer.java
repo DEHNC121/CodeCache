@@ -1,4 +1,4 @@
-package SQLEngine;
+package SQLRequests;
 
 import SQLRequests.SQLAnswer;
 import SQLRequests.SQLQuestion;

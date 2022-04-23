@@ -3,9 +3,8 @@ package SQLRequests;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "answers")
-public class SQLAnswer {
-
+@Table(name = "keywords")
+public class SQLKeyword {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_sequence")
     @Column(name = "id", nullable = false)
@@ -25,5 +24,12 @@ public class SQLAnswer {
     }
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "SQLKeyword{" +
+                "value='" + value + '\'' +
+                '}';
     }
 }
