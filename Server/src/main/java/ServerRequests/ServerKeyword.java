@@ -2,17 +2,17 @@ package ServerRequests;
 
 import SQLRequests.SQLKeyword;
 
+import java.util.Comparator;
+
 public class ServerKeyword {
     private Long position;
-    private String keyword;
+    private final String keyword;
+    private final Double basicScore;
 
-    public ServerKeyword(Long position, String keyword) {
+    public ServerKeyword(Long position, String keyword, Double basicScore) {
         this.position = position;
         this.keyword = keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+        this.basicScore = basicScore;
     }
 
     public String getKeyword() {
@@ -21,6 +21,17 @@ public class ServerKeyword {
 
     public Long getPosition() {
         return position;
+    }
+
+    public Double getBasicScore() {
+        return basicScore;
+    }
+
+    static class SortByPosition implements Comparator<ServerKeyword> {
+
+        public int compare(ServerKeyword a, ServerKeyword b) {
+            return (int) (a.getPosition() - b.getPosition());
+        }
     }
 
     public void setPosition(Long position) {

@@ -3,47 +3,57 @@ package ServerRequests;
 import SQLRequests.SQLQuestionKeyword;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class QuestionCandidate {
-    private Long id;
-    private Long number;
-    private List<SQLQuestionKeyword> keywords;
+    private final Long id;
+    private Double score;
+    private final List<ServerKeyword> keywords;
 
-    public QuestionCandidate(Long id, Long number) {
+    public QuestionCandidate(Long id) {
         this.id = id;
-        this.number = number;
-        keywords= new ArrayList<>();
+        this.score = 0D;
+        keywords = new ArrayList<>();
     }
 
-    public void numberUp() {
-        this.number++;
+    public void add(SQLQuestionKeyword keyword) {
+        var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword().getValue(), 1D / keyword.getQuestion().getKeywordCount());
+        keywords.add(skw);
+        basicUp(skw);
     }
 
-    public void add(SQLQuestionKeyword keyword){
-        keywords.add(keyword);
+    public void add(SQLQuestionKeyword keyword, Long position) {
+        var skw = new ServerKeyword(position, keyword.getKeyword().getValue(), 1D / keyword.getQuestion().getKeywordCount());
+        keywords.add(skw);
+        basicUp(skw);
     }
 
-    public Long getNumber() {
-        return number;
+    public void sort() {
+        keywords.sort(new ServerKeyword.SortByPosition());
     }
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public List<ServerKeyword> getKeywords() {
+        return keywords;
+    }
+
+    public void basicUp(ServerKeyword keyword) {
+        this.score += keyword.getBasicScore();
+    }
+
+    public Double getScore() {
+        return score;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "QuestionData{" +
-                "number=" + number +
+                "score=" + score +
                 '}';
     }
+
 }
