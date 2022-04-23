@@ -32,27 +32,56 @@ public class SQLEngineImpl implements SQLEngine {
         }
     }
 
-    //TODO: duplicates
+    private SQLKeyword saveKeyword(SQLKeyword keyword, Session session){
+        var temp = session.createQuery("from SQLKeyword where value=:v").setParameter("v", keyword.getValue()).uniqueResultOptional();
+        if (temp.isPresent())
+            return (SQLKeyword) temp.get();
+        session.save(keyword);
+        return keyword;
+    }
+
+    private SQLQuestion saveQuestion(SQLQuestion question, Session session){
+        session.save(question);
+        return question;
+    }
+
+    private SQLAnswer saveAnswer(SQLAnswer answer, Session session){
+        var temp = session.createQuery("from SQLAnswer where value=:v").setParameter("v", answer.getValue()).uniqueResultOptional();
+        if (temp.isPresent())
+            return (SQLAnswer) temp.get();
+        session.save(answer);
+        return answer;
+    }
+
+    private SQLQuestionAnswer saveQuestionAnswer(SQLQuestionAnswer qa, Session session){
+        var temp = session.createQuery("from SQLQuestionAnswer where question=:q and answer=:a")
+                .setParameter("q", qa.getQuestion()).setParameter("a", qa.getAnswer()).uniqueResultOptional();
+        if (temp.isPresent())
+            return (SQLQuestionAnswer) temp.get();
+        session.save(qa);
+        return qa;
+    }
+
     @Override
     public void add(ServerQuestion q, ServerAnswer a) {
         SQLQuestion question = sqlFactory.createQuestion(q);
         SQLAnswer answer = sqlFactory.createAnswer(a);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(question);
-        session.save(answer);
+        question = saveQuestion(question, session);
+        answer = saveAnswer(answer, session);
         SQLQuestionAnswer qa = new SQLQuestionAnswer();
         qa.setQuestion(question);
         qa.setAnswer(answer);
-        session.save(qa);
+        qa = saveQuestionAnswer(qa, session);
         Long pos = 0L;
-        for (String keyword: q.getKeys()){
-            SQLKeyword k = new SQLKeyword();
-            k.setValue(keyword);
-            session.save(k);
+        for (String keywordValue: q.getKeys()){
+            SQLKeyword keyword = new SQLKeyword();
+            keyword.setValue(keywordValue);
+            keyword = saveKeyword(keyword, session);
             SQLQuestionKeyword qk = new SQLQuestionKeyword();
             qk.setQuestion(question);
-            qk.setKeyword(k);
+            qk.setKeyword(keyword);
             qk.setPosition(pos);
             session.save(qk);
             pos++;
