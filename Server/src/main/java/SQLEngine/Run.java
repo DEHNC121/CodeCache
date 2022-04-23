@@ -20,6 +20,7 @@ public class Run {
         sqlEngine.add(new ServerQuestion("czemu tak "), new ServerAnswer("bo aaa"));
         sqlEngine.add(new ServerQuestion("jak nam"), new ServerAnswer("bo aaad"));
         sqlEngine.add(new ServerQuestion("czemu am "), new ServerAnswer("bo saa"));
+        sqlEngine.add(new ServerQuestion("czemu tam "), new ServerAnswer("bo saa"));
         ServerEngine serverEngine = new ServerEngineImpl(sqlEngine);
         System.out.println(serverEngine.query(new ServerQuestion("czemu tak")));
     }
