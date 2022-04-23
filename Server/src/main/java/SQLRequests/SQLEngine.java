@@ -1,8 +1,12 @@
 package SQLRequests;
 
+import ServerRequests.ServerAnswer;
+import ServerRequests.ServerQuestion;
+
 import java.util.List;
 
 public interface SQLEngine {
-    void add(SQLQuestion q, SQLAnswer a);
-    List<SQLAnswer> query(SQLQuestion q);
+    void add(ServerQuestion question, ServerAnswer answer);
+    List<SQLQuestionAnswer> query(List<Long> questionIds);
+    List<SQLQuestionKeyword> getKeywords(List<String> keywords);
 }
