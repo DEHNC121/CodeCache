@@ -13,11 +13,12 @@ export const get_answers = async (query: string): Promise<Array<object>> => {
     const json = await ans.json();
 
     return json.answers;
+    //return [{"text": "int a;\ncout<<a<<endl;\nreturn 1;"}];
 };
 
 export const insert_answers = (answs: Array<any>, html_back: HTMLElement) => {
 
-    let save = document.getElementById("add-button")
+    let foot = document.getElementById("CodeCache-foot")
 
     for (let a in answs) {
         //html_back.insertAdjacentHTML("afterbegin", answer);
@@ -35,7 +36,7 @@ export const insert_answers = (answs: Array<any>, html_back: HTMLElement) => {
         div.appendChild(button)
 
         //html_back.appendChild(div);
-        html_back.insertBefore(div, save)
+        html_back.insertBefore(div, foot)
     }
 }
 
