@@ -1,7 +1,7 @@
 .background-CodeCache{
     display: flex;
     flex-direction: column;
-    min-height: 90px;
+    min-height: 40px;
     background-color: #1e1e20;
     width: 632px;
     margin-top: 10px;
@@ -21,6 +21,17 @@
     padding: 5px;
     justify-content: flex-end;
 }
+
+.foot-caption{
+    background: transparent;
+    margin: 5px;
+    margin-left: 0;
+    margin-right: auto;
+    color: #851d3e;
+    padding: 5px;
+    font-weight: bold;
+}
+
 
 
 .ans-CodeCache{
@@ -50,34 +61,6 @@
     white-space: pre-wrap;
     line-height: 20px;
 }
-
-
-.panel-CodeCache{
-    /*font-family: cursive;*/
-    background-color: gray;
-    height: 190px;
-    width: 652px;
-    margin: 10px;
-    padding: 10px;
-}
-
-.query-CodeCache{
-    color: white;
-    background-color: black;
-    height: 20px;
-    width: 632px;
-    padding: 5px;
-}
-
-.textfield-CodeCache{
-    color: black;
-    background-color: white;
-    height: 110px;
-    width: 632px;
-    padding: 5px;
-    margin-top: 5px;
-}
-
 
 .save-button-CodeCache{
     /*background-color: #288e2f;*/
