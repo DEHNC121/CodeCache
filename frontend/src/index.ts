@@ -1,28 +1,18 @@
-import {get_answers, html_inject} from "./rest";
+import {get_answers, html_inject, insert_answers} from "./rest";
 
+// inject html
 const parent_name = "appbar";
-
-
-let html = "<div class=\"panel-CodeCache\" id=\"CodeCache-addon\">\n" +
-    "    <div class=\"query-CodeCache\" id=\"codecache-query-field\"></div>\n" +
-    "    <label>\n" +
-    "        <textarea class=\"textfield-CodeCache\"></textarea>\n" +
-    "    </label>\n" +
-    "    <button class=\"save-button-CodeCache\">save</button>\n" +
-    "</div>\n"
-
-console.log(html_inject());
-
 document.getElementById(parent_name).insertAdjacentHTML("afterbegin", html_inject());
 
-
-let query = document.getElementById("CodeCache-query-field");
+// get query parameters
 const url = new URL(document.URL);
 let query_params = url.searchParams.get('q');
-
 console.log(query_params);
-query.textContent = query_params;
 
+// REST API communication
+get_answers(query_params).then(response => {
+    console.log(response);
+    insert_answers(response, document.getElementById("CodeCache-background"));
+});
 
-console.log(get_answers(query_params));
 
