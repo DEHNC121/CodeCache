@@ -1,6 +1,7 @@
 package SQLRequests;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,16 @@ public class SQLQuestion {
             inverseJoinColumns = { @JoinColumn(name = "keyword_position_id") }
     )
     Set<SQLKeywordPosition> keywords = new HashSet<>();
+
+    public String getFull(){
+        ArrayList<String> temp = new ArrayList<String>(keywordCount.intValue());
+        while(temp.size() < keywordCount.intValue())
+            temp.add("");
+        for (var keywordPosition: keywords){
+            temp.set(keywordPosition.getPosition().intValue(), keywordPosition.getKeyword().getValue());
+        }
+        return String.join(" ", temp);
+    }
 
     public Long getId() {
         return id;

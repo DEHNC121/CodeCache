@@ -1,8 +1,11 @@
-package SQLEngine;
+package SQLRequests;
 
+import SQLEngine.SQLEngine;
 import SQLRequests.*;
 import ServerRequests.ServerAnswer;
 import ServerRequests.ServerQuestion;
+import SQLEngine.EngineQuestionAnswer;
+import SQLEngine.EngineQuestionKeyword;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -66,13 +69,13 @@ public class SQLEngineImpl implements SQLEngine {
         }
         question.setKeywords(tempSet);
 
-        var temp = session.createQuery(
-                "from SQLQuestion q join q.keywords x " +
-                        "where x in ()")
-                .setParameter("k", question.getKeywords())
-                .uniqueResultOptional();
-        if (temp.isPresent())
-            return (SQLQuestion) temp.get();
+//        var temp = session.createQuery(
+//                "from SQLQuestion q join q.keywords x " +
+//                        "where x in ()")
+//                .setParameter("k", question.getKeywords())
+//                .uniqueResultOptional();
+//        if (temp.isPresent())
+//            return (SQLQuestion) temp.get();
         session.save(question);
         return question;
     }
@@ -107,13 +110,13 @@ public class SQLEngineImpl implements SQLEngine {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<SQLQuestionAnswers> query(List<Long> questionIds) {
+    public List<EngineQuestionAnswer> query(List<Long> questionIds) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<SQLQuestionAnswers> result = session.createQuery(
-                "select new SQLRequests.SQLQuestionAnswers(question, answers)" +
-                        " from SQLQuestion question join question.answers answers" +
-                        " where question.id in (:q)")
+        List<EngineQuestionAnswer> result = session.createQuery(
+                "select new SQLEngine.EngineQuestionAnswer(question, answers) " +
+                        "from SQLQuestion question join question.answers answers " +
+                        "where question.id in (:q)")
                 .setParameter("q", questionIds)
                 .list();
         session.getTransaction().commit();
@@ -123,11 +126,11 @@ public class SQLEngineImpl implements SQLEngine {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<SQLQuestionKeyword> getKeywords(List<String> keywords) {
+    public List<EngineQuestionKeyword> getKeywords(List<String> keywords) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<SQLQuestionKeyword> result = session.createQuery(
-                "select new SQLRequests.SQLQuestionKeyword(question, keywords.keyword, keywords.position) " +
+        List<EngineQuestionKeyword> result = session.createQuery(
+                "select new SQLEngine.EngineQuestionKeyword(question, keywords.keyword, keywords.position) " +
                         "from SQLQuestion question join question.keywords keywords " +
                         "where keywords.keyword.value in (:l)")
                 .setParameterList("l", keywords)

@@ -1,18 +1,16 @@
 package ServerRequests;
 
-import SQLEngine.SQLEngineImpl;
-import SQLRequests.SQLAnswer;
-import SQLRequests.SQLQuestionAnswers;
-import SQLRequests.SQLKeyword;
+import SQLEngine.EngineQuestionAnswer;
+import SQLEngine.SQLEngine;
 
 import java.util.*;
 
 public class ServerEngineImpl implements ServerEngine {
 
-    SQLEngineImpl engine;
+    SQLEngine engine;
 
 
-    public ServerEngineImpl(SQLEngineImpl engine) {
+    public ServerEngineImpl(SQLEngine engine) {
         this.engine = engine;
     }
 
@@ -23,18 +21,18 @@ public class ServerEngineImpl implements ServerEngine {
 
     private class Keyword {
         private Long position;
-        private SQLKeyword keyword;
+        private String keyword;
 
-        public Keyword(Long position, SQLKeyword keyword) {
+        public Keyword(Long position, String keyword) {
             this.position = position;
             this.keyword = keyword;
         }
 
-        public void setKeyword(SQLKeyword keyword) {
+        public void setKeyword(String keyword) {
             this.keyword = keyword;
         }
 
-        public SQLKeyword getKeyword() {
+        public String getKeyword() {
             return keyword;
         }
 
@@ -84,7 +82,7 @@ public class ServerEngineImpl implements ServerEngine {
         }
     }
 
-    private List<ServerAnswer> answerFormat(List<SQLQuestionAnswers> inList, ArrayList<Long> order) {
+    private List<ServerAnswer> answerFormat(List<EngineQuestionAnswer> inList, ArrayList<Long> order) {
         var answers = new ArrayList<ServerAnswer>();
 
         for (var i = 0; i < order.size(); i++) {
@@ -94,10 +92,7 @@ public class ServerEngineImpl implements ServerEngine {
         for (var a : inList) {
             for (var i = 0; i < order.size(); i++) {
                 if (Objects.equals(order.get(i), a.getQuestion().getId())) {
-                    for (SQLAnswer answer: a.getAnswers()) {
-                        answers.set(i, new ServerAnswer(answer.getValue()));
-                        break;
-                    }
+                    answers.set(i, new ServerAnswer(a.getAnswer().getValue()));
                     break;
                 }
             }

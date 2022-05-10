@@ -22,7 +22,7 @@
 
         <mapping class="SQLRequests.SQLQuestion"/>
         <mapping class="SQLRequests.SQLAnswer"/>
-<!--        <mapping class="SQLRequests.SQLQuestionAnswers"/>-->
+<!--        <mapping class="SQLEngine.EngineQuestionAnswer"/>-->
         <mapping class="SQLRequests.SQLKeywordPosition"/>
         <mapping class="SQLRequests.SQLKeyword"/>
 
