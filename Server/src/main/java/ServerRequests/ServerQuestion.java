@@ -19,6 +19,13 @@ public class ServerQuestion {
         return words;
     }
 
+    @Override
+    public String toString() {
+        return "ServerQuestion{" +
+                "value='" + value + '\'' +
+                '}';
+    }
+
     public List<ServerKeyword> getKeyWords() {
         List<String> words = new ArrayList<>(Arrays.asList(this.value.split("\\s+")));
         List<ServerKeyword> keyWords = new ArrayList<>();

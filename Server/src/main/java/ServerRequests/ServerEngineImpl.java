@@ -19,8 +19,8 @@ public class ServerEngineImpl implements ServerEngine {
         engine.add(question, a);
     }
 
-    private List<ServerAnswer> answerFormat(List<SQLQuestionAnswer> inList, ArrayList<Long> order) {
-        var answers = new ArrayList<ServerAnswer>();
+    private List<RustAnswer> answerFormat(List<SQLQuestionAnswer> inList, ArrayList<Long> order) {
+        var answers = new ArrayList<RustAnswer>();
 
         for (var i = 0; i < order.size(); i++) {
             answers.add(null);
@@ -29,7 +29,7 @@ public class ServerEngineImpl implements ServerEngine {
         for (var a : inList) {
             for (var i = 0; i < order.size(); i++) {
                 if (Objects.equals(order.get(i), a.getQuestion().getId())) {
-                    answers.set(i, new ServerAnswer(a.getAnswer().getValue()));
+                    answers.set(i, new RustAnswer(new ServerAnswer(a.getAnswer().getValue()), new ServerQuestion(a.getQuestion().getFull())));
                     break;
                 }
             }
@@ -38,7 +38,8 @@ public class ServerEngineImpl implements ServerEngine {
     }
 
     @Override
-    public List<ServerAnswer> query(ServerQuestion question) {
+    public List<RustAnswer> query(ServerQuestion question) {
+        //all questions with keywords from original question
         var dbKeys = engine.getKeywords(question.getKeys());
         var questionKeywords = question.getKeyWords();
         var questionKeywordsMap = questionKeywords.stream().collect(Collectors.toMap(ServerKeyword::getKeyword, ServerKeyword::getPosition));
@@ -65,8 +66,8 @@ public class ServerEngineImpl implements ServerEngine {
 
         var answers = new ArrayList<Long>();
 
+        //top 5 selection
         for (int i = 0; i < 5 && !questionDataMap.isEmpty(); i++) {
-
             var maxEntry = Collections.max(questionDataMap.entrySet(), Comparator.comparing((var e) -> e.getValue().getScore()));
             answers.add(maxEntry.getKey());
             questionDataMap.remove(maxEntry.getKey());

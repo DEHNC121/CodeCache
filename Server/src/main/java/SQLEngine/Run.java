@@ -6,9 +6,6 @@ import ServerRequests.ServerEngine;
 import ServerRequests.ServerEngineImpl;
 import ServerRequests.ServerQuestion;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Run {
     public static void main(String[] args) {
         SQLFactory sqlFactory = new SQLFactory();
@@ -20,7 +17,7 @@ public class Run {
         serverEngine.add(new ServerQuestion("czemu tak "), new ServerAnswer("4"));
         serverEngine.add(new ServerQuestion("jak nam"), new ServerAnswer("5"));
         serverEngine.add(new ServerQuestion("czemu am "), new ServerAnswer("6"));
-      
+
         System.out.println(serverEngine.query(new ServerQuestion("czemu tak")));
     }
 }

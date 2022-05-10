@@ -25,4 +25,5 @@ public class SQLQuestion {
     public void setKeywordCount(Long keywordNumber) {
         this.keywordNumber = keywordNumber;
     }
+    public String getFull(){return "";}
 }
