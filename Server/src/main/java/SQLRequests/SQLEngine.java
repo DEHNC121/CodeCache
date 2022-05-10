@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SQLEngine {
     void add(ServerQuestion question, ServerAnswer answer);
-    List<SQLQuestionAnswer> query(List<Long> questionIds);
+    List<SQLQuestionAnswers> query(List<Long> questionIds);
     List<SQLQuestionKeyword> getKeywords(List<String> keywords);
 }

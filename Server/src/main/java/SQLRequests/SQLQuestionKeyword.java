@@ -2,32 +2,18 @@ package SQLRequests;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "QK", uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "keyword_id"}))
+
 public class SQLQuestionKeyword {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_sequence")
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
     private SQLQuestion question;
-
-    @ManyToOne
-    @JoinColumn(name = "keyword_id", nullable = false)
     private SQLKeyword keyword;
-
-    @Column(name = "position", nullable = false)
     private Long position;
 
-    public void setId(Long id) {
-        this.id = id;
+    public SQLQuestionKeyword(SQLQuestion question, SQLKeyword keyword, Long position){
+        this.question = question;
+        this.keyword = keyword;
+        this.position = position;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public void setKeyword(SQLKeyword keyword) {
         this.keyword = keyword;

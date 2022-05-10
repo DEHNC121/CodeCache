@@ -1,7 +1,8 @@
 package ServerRequests;
 
 import SQLEngine.SQLEngineImpl;
-import SQLRequests.SQLQuestionAnswer;
+import SQLRequests.SQLAnswer;
+import SQLRequests.SQLQuestionAnswers;
 import SQLRequests.SQLKeyword;
 
 import java.util.*;
@@ -83,7 +84,7 @@ public class ServerEngineImpl implements ServerEngine {
         }
     }
 
-    private List<ServerAnswer> answerFormat(List<SQLQuestionAnswer> inList, ArrayList<Long> order) {
+    private List<ServerAnswer> answerFormat(List<SQLQuestionAnswers> inList, ArrayList<Long> order) {
         var answers = new ArrayList<ServerAnswer>();
 
         for (var i = 0; i < order.size(); i++) {
@@ -93,7 +94,10 @@ public class ServerEngineImpl implements ServerEngine {
         for (var a : inList) {
             for (var i = 0; i < order.size(); i++) {
                 if (Objects.equals(order.get(i), a.getQuestion().getId())) {
-                    answers.set(i, new ServerAnswer(a.getAnswer().getValue()));
+                    for (SQLAnswer answer: a.getAnswers()) {
+                        answers.set(i, new ServerAnswer(answer.getValue()));
+                        break;
+                    }
                     break;
                 }
             }

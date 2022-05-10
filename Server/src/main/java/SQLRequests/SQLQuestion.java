@@ -1,6 +1,8 @@
 package SQLRequests;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -10,8 +12,24 @@ public class SQLQuestion {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "keyword_number", nullable = false)
-    private Long keywordNumber;
+    @Column(name = "keyword_count", nullable = false)
+    private Long keywordCount;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "question_answer",
+            joinColumns = { @JoinColumn(name = "question_id") },
+            inverseJoinColumns = { @JoinColumn(name = "answer_id") }
+    )
+    Set<SQLAnswer> answers = new HashSet<>();
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "question_keyword_position",
+            joinColumns = { @JoinColumn(name = "question_id") },
+            inverseJoinColumns = { @JoinColumn(name = "keyword_position_id") }
+    )
+    Set<SQLKeywordPosition> keywords = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -20,9 +38,21 @@ public class SQLQuestion {
         this.id = id;
     }
     public Long getKeywordCount() {
-        return keywordNumber;
+        return keywordCount;
     }
     public void setKeywordCount(Long keywordNumber) {
-        this.keywordNumber = keywordNumber;
+        this.keywordCount = keywordNumber;
+    }
+    public Set<SQLAnswer> getAnswers() {
+        return answers;
+    }
+    public void setAnswers(Set<SQLAnswer> answers) {
+        this.answers = answers;
+    }
+    public Set<SQLKeywordPosition> getKeywords() {
+        return keywords;
+    }
+    public void setKeywords(Set<SQLKeywordPosition> keywords) {
+        this.keywords = keywords;
     }
 }

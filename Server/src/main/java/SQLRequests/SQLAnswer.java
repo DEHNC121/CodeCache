@@ -1,6 +1,8 @@
 package SQLRequests;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "answers")
@@ -14,6 +16,9 @@ public class SQLAnswer {
     @Column(name = "value", unique = true)
     private String value;
 
+    @ManyToMany(mappedBy = "answers")
+    private Set<SQLQuestion> questions = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -25,5 +30,11 @@ public class SQLAnswer {
     }
     public void setValue(String value) {
         this.value = value;
+    }
+    public Set<SQLQuestion> getQuestions() {
+        return questions;
+    }
+    public void setQuestions(Set<SQLQuestion> questions) {
+        this.questions = questions;
     }
 }

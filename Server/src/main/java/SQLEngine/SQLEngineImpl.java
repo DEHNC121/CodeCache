@@ -9,6 +9,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class SQLEngineImpl implements SQLEngine {
@@ -33,33 +34,59 @@ public class SQLEngineImpl implements SQLEngine {
     }
 
     private SQLKeyword saveKeyword(SQLKeyword keyword, Session session){
-        var temp = session.createQuery("from SQLKeyword where value=:v").setParameter("v", keyword.getValue()).uniqueResultOptional();
+        var temp = session.createQuery(
+                "from SQLKeyword " +
+                        "where value=:v")
+                .setParameter("v", keyword.getValue())
+                .uniqueResultOptional();
         if (temp.isPresent())
             return (SQLKeyword) temp.get();
         session.save(keyword);
         return keyword;
     }
 
+    private SQLKeywordPosition saveKeywordPosition(SQLKeywordPosition keywordPosition, Session session){
+        keywordPosition.setKeyword(saveKeyword(keywordPosition.getKeyword(), session));
+        var temp = session.createQuery(
+                "from SQLKeywordPosition" +
+                        " where keyword =:k and position =:p")
+                .setParameter("k", keywordPosition.getKeyword())
+                .setParameter("p", keywordPosition.getPosition())
+                .uniqueResultOptional();
+        if (temp.isPresent())
+            return (SQLKeywordPosition) temp.get();
+        session.save(keywordPosition);
+        return keywordPosition;
+    }
+
     private SQLQuestion saveQuestion(SQLQuestion question, Session session){
+        HashSet<SQLKeywordPosition> tempSet = new HashSet<>();
+        for (SQLKeywordPosition keywordPosition: question.getKeywords()){
+            tempSet.add(saveKeywordPosition(keywordPosition, session));
+        }
+        question.setKeywords(tempSet);
+
+        var temp = session.createQuery(
+                "from SQLQuestion " +
+                        "where keywords=:k")
+                .setParameter("k", question.getKeywords())
+                .uniqueResultOptional();
+        if (temp.isPresent())
+            return (SQLQuestion) temp.get();
         session.save(question);
         return question;
     }
 
     private SQLAnswer saveAnswer(SQLAnswer answer, Session session){
-        var temp = session.createQuery("from SQLAnswer where value=:v").setParameter("v", answer.getValue()).uniqueResultOptional();
+        var temp = session.createQuery(
+                "from SQLAnswer " +
+                        "where value=:v")
+                .setParameter("v", answer.getValue())
+                .uniqueResultOptional();
         if (temp.isPresent())
             return (SQLAnswer) temp.get();
         session.save(answer);
         return answer;
-    }
-
-    private SQLQuestionAnswer saveQuestionAnswer(SQLQuestionAnswer qa, Session session){
-        var temp = session.createQuery("from SQLQuestionAnswer where question=:q and answer=:a")
-                .setParameter("q", qa.getQuestion()).setParameter("a", qa.getAnswer()).uniqueResultOptional();
-        if (temp.isPresent())
-            return (SQLQuestionAnswer) temp.get();
-        session.save(qa);
-        return qa;
     }
 
     @Override
@@ -67,35 +94,28 @@ public class SQLEngineImpl implements SQLEngine {
         SQLQuestion question = sqlFactory.createQuestion(q);
         SQLAnswer answer = sqlFactory.createAnswer(a);
         Session session = sessionFactory.openSession();
+
         session.beginTransaction();
-        question = saveQuestion(question, session);
+
         answer = saveAnswer(answer, session);
-        SQLQuestionAnswer qa = new SQLQuestionAnswer();
-        qa.setQuestion(question);
-        qa.setAnswer(answer);
-        qa = saveQuestionAnswer(qa, session);
-        Long pos = 0L;
-        for (String keywordValue: q.getKeys()){
-            SQLKeyword keyword = new SQLKeyword();
-            keyword.setValue(keywordValue);
-            keyword = saveKeyword(keyword, session);
-            SQLQuestionKeyword qk = new SQLQuestionKeyword();
-            qk.setQuestion(question);
-            qk.setKeyword(keyword);
-            qk.setPosition(pos);
-            session.save(qk);
-            pos++;
-        }
+        question = saveQuestion(question, session);
+        question.getAnswers().add(answer);
+
         session.getTransaction().commit();
         session.close();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<SQLQuestionAnswer> query(List<Long> questionIds) {
+    public List<SQLQuestionAnswers> query(List<Long> questionIds) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<SQLQuestionAnswer> result = session.createQuery("from SQLQuestionAnswer where question.id in (:q)").setParameter("q", questionIds).list();
+        List<SQLQuestionAnswers> result = session.createQuery(
+                "select new SQLRequests.SQLQuestionAnswers(question, answers)" +
+                        " from SQLQuestion question join question.answers answers" +
+                        " where question.id in (:q)")
+                .setParameter("q", questionIds)
+                .list();
         session.getTransaction().commit();
         session.close();
         return result;
@@ -106,9 +126,12 @@ public class SQLEngineImpl implements SQLEngine {
     public List<SQLQuestionKeyword> getKeywords(List<String> keywords) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<SQLQuestionKeyword> result = session.createQuery
-                        ("from SQLQuestionKeyword qk where qk.keyword.value in (:l)")
-                .setParameterList("l", keywords).list();
+        List<SQLQuestionKeyword> result = session.createQuery(
+                "select new SQLRequests.SQLQuestionKeyword(question, keywords.keyword, keywords.position) " +
+                        "from SQLQuestion question join question.keywords keywords " +
+                        "where keywords.keyword.value in (:l)")
+                .setParameterList("l", keywords)
+                .list();
         session.getTransaction().commit();
         session.close();
         return result;
