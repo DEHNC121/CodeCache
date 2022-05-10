@@ -10,7 +10,7 @@
     border-radius: 16px;
 }
 
-.foot-CodeCache{
+.add-div-CodeCache{
     display: flex;
     /*flex-direction: column;*/
     min-height: 30px;
@@ -19,6 +19,26 @@
     width: 95%;
     margin: 3px;
     padding: 5px;
+}
+
+.textfield-CodeCache{
+    width: 95%;
+    background-color: #3e3e42;
+    margin: 3px;
+    padding: 5px;
+    border-radius: 10px;
+    border-color: transparent;
+}
+
+.foot-CodeCache{
+    display: flex;
+    /*flex-direction: column;*/
+    min-height: 30px;
+    background: transparent;
+    color: white;
+    width: 95%;
+    margin: 3px;
+    padding: 8px;
     justify-content: flex-end;
 }
 
@@ -33,7 +53,6 @@
 }
 
 
-
 .ans-CodeCache{
     display: flex;
     /*flex-direction: column;*/
@@ -44,6 +63,13 @@
     margin: 3px;
     padding: 5px;
     border-radius: 10px;
+}
+
+.ans-inn-CodeCache{
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    width: 95%;
 }
 
 .ans-text-CodeCache{
@@ -60,6 +86,23 @@
     scrollbar-width: thin;
     white-space: pre-wrap;
     line-height: 20px;
+}
+
+.question-text-CodeCache{
+    display: flex;
+    /*flex-direction: column;*/
+    color: white;
+    background-color: transparent;
+    min-height: 20px;
+    width: 95%;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    white-space: pre-wrap;
+    line-height: 20px;
+    justify-content: center;
 }
 
 .save-button-CodeCache{
