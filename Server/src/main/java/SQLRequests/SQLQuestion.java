@@ -66,4 +66,5 @@ public class SQLQuestion {
     public void setKeywords(Set<SQLKeywordPosition> keywords) {
         this.keywords = keywords;
     }
+    public String getFull(){return "";}
 }
