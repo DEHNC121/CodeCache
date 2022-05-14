@@ -22,8 +22,8 @@
 
         <mapping class="SQLRequests.SQLQuestion"/>
         <mapping class="SQLRequests.SQLAnswer"/>
-        <mapping class="SQLRequests.SQLQuestionAnswer"/>
-        <mapping class="SQLRequests.SQLQuestionKeyword"/>
+<!--        <mapping class="SQLEngine.EngineQuestionAnswer"/>-->
+        <mapping class="SQLRequests.SQLKeywordPosition"/>
         <mapping class="SQLRequests.SQLKeyword"/>
 
     </session-factory>

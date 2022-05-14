@@ -1,6 +1,6 @@
 package ServerRequests;
 
-import SQLRequests.SQLQuestionKeyword;
+import SQLEngine.EngineQuestionKeyword;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,14 +17,14 @@ public class QuestionCandidate {
         keywords = new ArrayList<>();
     }
 
-    public void add(SQLQuestionKeyword keyword) {
-        var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword().getValue(), 1D / keyword.getQuestion().getKeywordCount());
+    public void add(EngineQuestionKeyword keyword) {
+        var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
         basicUp(skw);
     }
 
-    public void add(SQLQuestionKeyword keyword, Long position) {
-        var skw = new ServerKeyword(position, keyword.getKeyword().getValue(), 1D / keyword.getQuestion().getKeywordCount());
+    public void add(EngineQuestionKeyword keyword, Long position) {
+        var skw = new ServerKeyword(position, keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
         basicUp(skw);
     }

@@ -1,16 +1,16 @@
 package ServerRequests;
 
-import SQLEngine.SQLEngineImpl;
-import SQLRequests.SQLQuestionAnswer;
+import SQLEngine.SQLEngine;
+import SQLEngine.EngineQuestionAnswer;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ServerEngineImpl implements ServerEngine {
 
-    SQLEngineImpl engine;
+    SQLEngine engine;
 
-    public ServerEngineImpl(SQLEngineImpl engine) {
+    public ServerEngineImpl(SQLEngine engine) {
         this.engine = engine;
     }
 
@@ -19,7 +19,8 @@ public class ServerEngineImpl implements ServerEngine {
         engine.add(question, a);
     }
 
-    private List<RustAnswer> answerFormat(List<SQLQuestionAnswer> inList, ArrayList<Long> order) {
+
+    private List<RustAnswer> answerFormat(List<EngineQuestionAnswer> inList, ArrayList<Long> order) {
         var answers = new ArrayList<RustAnswer>();
 
         for (var i = 0; i < order.size(); i++) {
@@ -51,7 +52,7 @@ public class ServerEngineImpl implements ServerEngine {
             if (!questionDataMap.containsKey(id)) {
                 questionDataMap.put(id, new QuestionCandidate(id));
             }
-            questionDataMap.get(id).add(dbKey, questionKeywordsMap.get(dbKey.getKeyword().getValue()));
+            questionDataMap.get(id).add(dbKey, questionKeywordsMap.get(dbKey.getKeyword()));
         }
 
         // position scoring serverQuestions
