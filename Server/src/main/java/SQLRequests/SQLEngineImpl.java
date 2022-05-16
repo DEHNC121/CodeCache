@@ -141,4 +141,24 @@ public class SQLEngineImpl implements SQLEngine {
         session.close();
         return result;
     }
+
+    @Override
+    public void remove(Long questionId, Long answerId) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        var tempQuestion = session.createQuery(
+                                "from SQLQuestion where id = :qId")
+                .setParameter("qId", questionId)
+                .uniqueResultOptional();
+        var tempAnswer = session.createQuery(
+                        "from SQLAnswer where id = :aId")
+                .setParameter("aId", answerId)
+                .uniqueResultOptional();
+        if (tempQuestion.isPresent() && tempAnswer.isPresent()){
+            SQLQuestion question = (SQLQuestion) tempQuestion.get();
+            question.getAnswers().remove((SQLAnswer) tempAnswer.get());
+        }
+        session.getTransaction().commit();
+        session.close();
+    }
 }
