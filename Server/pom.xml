@@ -13,7 +13,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jetty.version>11.0.5</jetty.version>
-        <exec.mainClass>SQLEngine.Run</exec.mainClass>
+        <exec.mainClass>ServerMain</exec.mainClass>
     </properties>
 
     <dependencies>
