@@ -69,13 +69,15 @@ public class SQLEngineImpl implements SQLEngine {
         }
         question.setKeywords(tempSet);
 
-//        var temp = session.createQuery(
-//                "from SQLQuestion q join q.keywords x " +
-//                        "where x in ()")
-//                .setParameter("k", question.getKeywords())
-//                .uniqueResultOptional();
-//        if (temp.isPresent())
-//            return (SQLQuestion) temp.get();
+        var temp = session.createQuery(
+                "select q from SQLQuestion q join q.keywords x " +
+                        "where x in (:k)")
+                .setParameterList("k", question.getKeywords())
+                .list();
+        for (var q: temp){
+            if (((SQLQuestion)q).getKeywords().equals(question.getKeywords()))
+                return (SQLQuestion)q;
+        }
         session.save(question);
         return question;
     }
