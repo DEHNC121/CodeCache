@@ -47,5 +47,26 @@ public class AddServlet extends HttpServlet {
         System.out.println(text);
 
         SQLEngineSingleton.getInstance().add(new ServerQuestion(question), new ServerAnswer(text));
+
+
+
+        List<RustAnswer> answers = SQLEngineSingleton.getInstance().query(new ServerQuestion(question));
+        int size = answers.size();
+
+        String json = "{\n";
+        json += "\"answers\" : [\n";
+        for(int i = 0; i < size; i++) {
+            json += "{ \"question\": \"" + answers.get(i).getQuestion().getValue() + "\", ";
+            json += "\"text\": \"" + answers.get(i).getAnswer().getValue() + "\" }";
+            if(i < size-1)
+                json += ",\n";
+            else
+                json += "\n";
+        }
+        json += "]\n";
+        json += "}\n";
+
+        PrintWriter out = response.getWriter();
+        out.println(json);
     }
 }
