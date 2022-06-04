@@ -143,22 +143,23 @@ public class SQLEngineImpl implements SQLEngine {
     }
 
     @Override
-    public void remove(Long questionId, Long answerId) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        var tempQuestion = session.createQuery(
-                                "from SQLQuestion where id = :qId")
-                .setParameter("qId", questionId)
-                .uniqueResultOptional();
-        var tempAnswer = session.createQuery(
-                        "from SQLAnswer where id = :aId")
-                .setParameter("aId", answerId)
-                .uniqueResultOptional();
-        if (tempQuestion.isPresent() && tempAnswer.isPresent()){
-            SQLQuestion question = (SQLQuestion) tempQuestion.get();
-            question.getAnswers().remove((SQLAnswer) tempAnswer.get());
-        }
-        session.getTransaction().commit();
-        session.close();
+    public int remove(ServerQuestion serverQuestion, ServerAnswer serverAnswer){
+//        Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//        var tempQuestion = session.createQuery(
+//                                "from SQLQuestion where id = :qId")
+//                .setParameter("qId", questionId)
+//                .uniqueResultOptional();
+//        var tempAnswer = session.createQuery(
+//                        "from SQLAnswer where id = :aId")
+//                .setParameter("aId", answerId)
+//                .uniqueResultOptional();
+//        if (tempQuestion.isPresent() && tempAnswer.isPresent()){
+//            SQLQuestion question = (SQLQuestion) tempQuestion.get();
+//            question.getAnswers().remove((SQLAnswer) tempAnswer.get());
+//        }
+//        session.getTransaction().commit();
+//        session.close();
+        return -1;
     }
 }

@@ -9,5 +9,5 @@ public interface SQLEngine {
     void add(ServerQuestion question, ServerAnswer answer);
     List<EngineQuestionAnswer> query(List<Long> questionIds);
     List<EngineQuestionKeyword> getKeywords(List<String> keywords);
-    void remove(Long questionId, Long answerId);
+    int remove(ServerQuestion serverQuestion, ServerAnswer serverAnswer);
 }
