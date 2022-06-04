@@ -69,13 +69,15 @@ public class SQLEngineImpl implements SQLEngine {
         }
         question.setKeywords(tempSet);
 
-//        var temp = session.createQuery(
-//                "from SQLQuestion q join q.keywords x " +
-//                        "where x in ()")
-//                .setParameter("k", question.getKeywords())
-//                .uniqueResultOptional();
-//        if (temp.isPresent())
-//            return (SQLQuestion) temp.get();
+        var temp = session.createQuery(
+                "select q from SQLQuestion q join q.keywords x " +
+                        "where x in (:k)")
+                .setParameterList("k", question.getKeywords())
+                .list();
+        for (var q: temp){
+            if (((SQLQuestion)q).getKeywords().equals(question.getKeywords()))
+                return (SQLQuestion)q;
+        }
         session.save(question);
         return question;
     }
@@ -138,5 +140,26 @@ public class SQLEngineImpl implements SQLEngine {
         session.getTransaction().commit();
         session.close();
         return result;
+    }
+
+    @Override
+    public int remove(ServerQuestion serverQuestion, ServerAnswer serverAnswer){
+//        Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//        var tempQuestion = session.createQuery(
+//                                "from SQLQuestion where id = :qId")
+//                .setParameter("qId", questionId)
+//                .uniqueResultOptional();
+//        var tempAnswer = session.createQuery(
+//                        "from SQLAnswer where id = :aId")
+//                .setParameter("aId", answerId)
+//                .uniqueResultOptional();
+//        if (tempQuestion.isPresent() && tempAnswer.isPresent()){
+//            SQLQuestion question = (SQLQuestion) tempQuestion.get();
+//            question.getAnswers().remove((SQLAnswer) tempAnswer.get());
+//        }
+//        session.getTransaction().commit();
+//        session.close();
+        return -1;
     }
 }
