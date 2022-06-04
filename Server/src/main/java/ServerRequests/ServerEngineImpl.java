@@ -1,15 +1,15 @@
 package ServerRequests;
 
-import SQLEngine.SQLEngineImpl;
-import SQLRequests.SQLQuestionAnswer;
+import SQLEngine.SQLEngine;
+import SQLEngine.EngineQuestionAnswer;
 
 import java.util.*;
 
 public class ServerEngineImpl implements ServerEngine {
 
-    SQLEngineImpl engine;
+    SQLEngine engine;
 
-    public ServerEngineImpl(SQLEngineImpl engine) {
+    public ServerEngineImpl(SQLEngine engine) {
         this.engine = engine;
     }
 
@@ -18,6 +18,8 @@ public class ServerEngineImpl implements ServerEngine {
         engine.add(question, a);
     }
 
+
+    private List<RustAnswer> answerFormat(List<EngineQuestionAnswer> inList, ArrayList<Long> order) {
     @Override
     public int remove(ServerQuestion q, ServerAnswer a) {
         return 0;
@@ -33,7 +35,7 @@ public class ServerEngineImpl implements ServerEngine {
         for (var a : inList) {
             for (var i = 0; i < order.size(); i++) {
                 if (Objects.equals(order.get(i), a.getQuestion().getId())) {
-                    answers.set(i, new RustAnswer(new ServerAnswer(a.getAnswer().getValue(),a.getAnswer().getId()), new ServerQuestion(a.getQuestion().getFull(), a.getQuestion().getId())));
+                    answers.set(i, new RustAnswer(new ServerAnswer(a.getAnswer().getValue()), new ServerQuestion(a.getQuestion().getFull())));
                     break;
                 }
             }
@@ -85,7 +87,7 @@ public class ServerEngineImpl implements ServerEngine {
             if (!questionDataMap.containsKey(id)) {
                 questionDataMap.put(id, new QuestionCandidate(id));
             }
-            questionDataMap.get(id).add(dbKey);
+            questionDataMap.get(id).add(dbKey, questionKeywordsMap.get(dbKey.getKeyword()));
         }
 
         // position scoring serverQuestions

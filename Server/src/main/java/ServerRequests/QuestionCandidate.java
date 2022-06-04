@@ -1,6 +1,6 @@
 package ServerRequests;
 
-import SQLRequests.SQLQuestionKeyword;
+import SQLEngine.EngineQuestionKeyword;
 
 import java.awt.*;
 import java.util.*;
@@ -24,8 +24,8 @@ public class QuestionCandidate {
         correctPositionPrev = new HashMap<>();
     }
 
-    public void add(SQLQuestionKeyword keyword) {
-        var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword().getValue(), 1D / keyword.getQuestion().getKeywordCount());
+    public void add(EngineQuestionKeyword keyword) {
+        var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
         if (!exist.containsKey( keyword.getKeyword().getValue())) {
             exist.put(keyword.getKeyword().getValue(), 0L);
@@ -34,8 +34,8 @@ public class QuestionCandidate {
         }
     }
 
-    public void add(SQLQuestionKeyword keyword, Long position) {
-        var skw = new ServerKeyword(position, keyword.getKeyword().getValue(), 1D / keyword.getQuestion().getKeywordCount());
+    public void add(EngineQuestionKeyword keyword, Long position) {
+        var skw = new ServerKeyword(position, keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
         if (!exist.containsKey( keyword.getKeyword().getValue())) {
             exist.put(keyword.getKeyword().getValue(), 0L);
