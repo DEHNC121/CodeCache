@@ -6,9 +6,15 @@ import java.util.List;
 
 public class ServerQuestion {
     private final String value;
+    private final Long id;
 
+    public ServerQuestion(String value, Long id) {
+        this.value = value.toLowerCase();
+        this.id = id;
+    }
     public ServerQuestion(String value) {
         this.value = value.toLowerCase();
+        this.id = -1L;
     }
 
     public List<String> getKeys() {
@@ -23,6 +29,7 @@ public class ServerQuestion {
     public String toString() {
         return "ServerQuestion{" +
                 "value='" + value + '\'' +
+                ", id=" + id +
                 '}';
     }
 
@@ -40,5 +47,9 @@ public class ServerQuestion {
 
     public String getValue() {
         return this.value;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
