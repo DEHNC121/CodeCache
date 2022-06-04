@@ -21,7 +21,7 @@ public class Run {
         sqlEngine.add(new ServerQuestion("czemu tam "), new ServerAnswer("7"));
         sqlEngine.add(new ServerQuestion("czemu tam "), new ServerAnswer("8"));
 
-//        sqlEngine.remove(158L, 8L);
+        sqlEngine.remove(new ServerQuestion("czemu tam",158L), new ServerAnswer("8", 8L));
 
         ServerEngine serverEngine = new ServerEngineImpl(sqlEngine);
         System.out.println(serverEngine.query(new ServerQuestion("czemu tak")));
