@@ -1,7 +1,7 @@
 {
 
   "manifest_version": 2,
-  "name": "modify-google",
+  "name": "CodeCache",
   "version": "1.0",
   "devtools_page": "devtools-page.html",
 
@@ -15,7 +15,13 @@
   ],
 
   "permissions": [
-    "http://52.236.88.159/*"
-  ]
+    "http://52.236.88.159/*",
+    "storage"
+  ],
+
+  "options_ui": {
+    "page": "src/options.html",
+    "browser_style": true
+  }
 
 }

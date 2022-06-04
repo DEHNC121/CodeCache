@@ -1,17 +1,18 @@
-import {get_answers, html_inject} from "./rest";
+import {get_answers, html_inject, get_query} from "./rest";
 import {insert_answers, set_add_button} from "./display_setting";
 
 // inject html
 const parent_name = "rso";
 document.getElementById(parent_name).insertAdjacentHTML("afterbegin", html_inject());
 
-set_add_button(document.getElementById("CodeCache-background"));
 // get query parameters
-const url = new URL(document.URL);
-let query_params = url.searchParams.get('q');
+let query_params = get_query()
 console.log(query_params);
 
-//REST API communication
+// set button behaviour
+set_add_button(document.getElementById("CodeCache-background"), query_params);
+
+//REST GET answers
 get_answers(query_params).then(response => {
     console.log(response);
     insert_answers(response, document.getElementById("CodeCache-background"));
