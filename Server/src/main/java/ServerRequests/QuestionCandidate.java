@@ -27,20 +27,20 @@ public class QuestionCandidate {
     public void add(EngineQuestionKeyword keyword) {
         var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
-        if (!exist.containsKey( keyword.getKeyword().getValue())) {
-            exist.put(keyword.getKeyword().getValue(), 0L);
-            correctPositionNext.put(keyword.getKeyword().getValue(), new HashMap<>());
-            correctPositionPrev.put(keyword.getKeyword().getValue(), new HashMap<>());
+        if (!exist.containsKey( keyword.getKeyword())) {
+            exist.put(keyword.getKeyword(), 0L);
+            correctPositionNext.put(keyword.getKeyword(), new HashMap<>());
+            correctPositionPrev.put(keyword.getKeyword(), new HashMap<>());
         }
     }
 
     public void add(EngineQuestionKeyword keyword, Long position) {
         var skw = new ServerKeyword(position, keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
-        if (!exist.containsKey( keyword.getKeyword().getValue())) {
-            exist.put(keyword.getKeyword().getValue(), 0L);
-            correctPositionNext.put(keyword.getKeyword().getValue(),new HashMap<>());
-            correctPositionPrev.put(keyword.getKeyword().getValue(), new HashMap<>());
+        if (!exist.containsKey( keyword.getKeyword())) {
+            exist.put(keyword.getKeyword(), 0L);
+            correctPositionNext.put(keyword.getKeyword(),new HashMap<>());
+            correctPositionPrev.put(keyword.getKeyword(), new HashMap<>());
 
         }
 
