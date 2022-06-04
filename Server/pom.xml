@@ -29,6 +29,12 @@
             <version>42.3.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+
         <!-- Jakarta Servlets API -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
