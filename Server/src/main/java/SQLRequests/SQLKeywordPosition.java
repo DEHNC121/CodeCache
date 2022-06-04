@@ -1,18 +1,19 @@
 package SQLRequests;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "QK", uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "keyword_id"}))
-public class SQLQuestionKeyword {
+@Table(name = "KP")
+public class SQLKeywordPosition {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hibernate_sequence")
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
-    private SQLQuestion question;
+    @ManyToMany(mappedBy = "keywords")
+    private Set<SQLQuestion> questions = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "keyword_id", nullable = false)
@@ -35,14 +36,6 @@ public class SQLQuestionKeyword {
 
     public SQLKeyword getKeyword() {
         return keyword;
-    }
-
-    public void setQuestion(SQLQuestion question) {
-        this.question = question;
-    }
-
-    public SQLQuestion getQuestion() {
-        return question;
     }
 
     public Long getPosition() {
