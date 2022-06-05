@@ -1,22 +1,21 @@
-package SQLEngine;
+package ServerRequests;
 
 import SQLRequests.SQLFactory;
 import SQLRequests.SQLEngineImpl;
-import ServerRequests.*;
 
 import java.util.List;
 
-public class SQLEngineSingleton {
+public class ServerEngineSingleton {
     private SQLFactory sqlFactory;
     private SQLEngineImpl sqlEngine;
     private ServerEngine serverEngine;
 
-    private static SQLEngineSingleton instance = new SQLEngineSingleton();
-    public static SQLEngineSingleton getInstance() {
+    private static ServerEngineSingleton instance = new ServerEngineSingleton();
+    public static ServerEngineSingleton getInstance() {
         return instance;
     }
 
-    private SQLEngineSingleton() {
+    private ServerEngineSingleton() {
         sqlFactory = new SQLFactory();
         sqlEngine = new SQLEngineImpl(sqlFactory);
         serverEngine = new ServerEngineImpl(sqlEngine);
@@ -37,4 +36,7 @@ public class SQLEngineSingleton {
         return serverEngine.query(q);
     }
 
+    public int remove(ServerQuestion q, ServerAnswer a) {
+        return serverEngine.remove(q, a);
+    }
 }

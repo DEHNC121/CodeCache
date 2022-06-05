@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import SQLEngine.SQLEngineSingleton;
+import ServerRequests.ServerEngineSingleton;
 import ServerRequests.RustAnswer;
 import ServerRequests.ServerQuestion;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,7 +22,7 @@ public class SearchServlet extends HttpServlet{
     }
 
     static void sendJSON(HttpServletResponse response, String question) throws IOException {
-        List<RustAnswer> answers = SQLEngineSingleton.getInstance().query(new ServerQuestion(question));
+        List<RustAnswer> answers = ServerEngineSingleton.getInstance().query(new ServerQuestion(question));
         int size = answers.size();
 
 
