@@ -144,22 +144,34 @@ public class SQLEngineImpl implements SQLEngine {
 
     @Override
     public int remove(ServerQuestion serverQuestion, ServerAnswer serverAnswer){
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//        var tempQuestion = session.createQuery(
-//                                "from SQLQuestion where id = :qId")
-//                .setParameter("qId", questionId)
-//                .uniqueResultOptional();
-//        var tempAnswer = session.createQuery(
-//                        "from SQLAnswer where id = :aId")
-//                .setParameter("aId", answerId)
-//                .uniqueResultOptional();
-//        if (tempQuestion.isPresent() && tempAnswer.isPresent()){
-//            SQLQuestion question = (SQLQuestion) tempQuestion.get();
-//            question.getAnswers().remove((SQLAnswer) tempAnswer.get());
-//        }
-//        session.getTransaction().commit();
-//        session.close();
-        return -1;
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var tempQuestion = session.createQuery(
+                                "from SQLQuestion where id = :qId")
+                .setParameter("qId", serverQuestion.getId())
+                .uniqueResultOptional();
+        if (tempQuestion.isEmpty() || !((SQLQuestion)tempQuestion.get()).getFull().equals(serverQuestion.getValue())){
+            session.getTransaction().commit();
+            session.close();
+            return -1;
+        }
+
+        var tempAnswer = session.createQuery(
+                        "from SQLAnswer where id = :aId")
+                .setParameter("aId", serverAnswer.getId())
+                .uniqueResultOptional();
+        if (tempAnswer.isEmpty() || !((SQLAnswer)tempAnswer.get()).getValue().equals(serverAnswer.getValue())){
+            session.getTransaction().commit();
+            session.close();
+            return -1;
+        }
+
+        SQLQuestion question = (SQLQuestion) tempQuestion.get();
+        question.getAnswers().remove((SQLAnswer) tempAnswer.get());
+
+        session.getTransaction().commit();
+        session.close();
+        return 0;
     }
 }
