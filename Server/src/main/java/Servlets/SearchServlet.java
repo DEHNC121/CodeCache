@@ -18,6 +18,10 @@ public class SearchServlet extends HttpServlet{
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String question = request.getParameter("q");
+        sendJSON(response, question);
+    }
+
+    static void sendJSON(HttpServletResponse response, String question) throws IOException {
         List<RustAnswer> answers = SQLEngineSingleton.getInstance().query(new ServerQuestion(question));
         int size = answers.size();
 
@@ -26,7 +30,9 @@ public class SearchServlet extends HttpServlet{
         json += "\"answers\" : [\n";
         for(int i = 0; i < size; i++) {
             json += "{ \"question\": \"" + answers.get(i).getQuestion().getValue() + "\", ";
-            json += "\"text\": \"" + answers.get(i).getAnswer().getValue() + "\" }";
+            json += "\"questionId\": " + answers.get(i).getQuestion().getId() + ", ";
+            json += "\"text\": \"" + answers.get(i).getAnswer().getValue() + "\", ";
+            json += "\"textId\": " + answers.get(i).getAnswer().getId() + " }";
             if(i < size-1)
                 json += ",\n";
             else

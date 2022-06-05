@@ -6,7 +6,7 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.username">bb</property>
+        <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">admin</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/codecache</property>
 
@@ -22,7 +22,7 @@
 
         <mapping class="SQLRequests.SQLQuestion"/>
         <mapping class="SQLRequests.SQLAnswer"/>
-<!--        <mapping class="SQLEngine.EngineQuestionAnswer"/>-->
+        <!--        <mapping class="SQLEngine.EngineQuestionAnswer"/>-->
         <mapping class="SQLRequests.SQLKeywordPosition"/>
         <mapping class="SQLRequests.SQLKeyword"/>
 
