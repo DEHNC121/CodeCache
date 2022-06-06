@@ -4,9 +4,9 @@ function saveOptions(e) {
     e.preventDefault();
     console.log("save?");
     browser.storage.sync.set({
-        hostport: document.querySelector("#host").value
+        host: document.querySelector("#host").value
     });
-    document.getElementById("CodeCacheOptionsButton").textContent = ("SAVE "+ document.querySelector("#host").value);
+    document.getElementById("CodeCacheOptionsButton").textContent = ("SAVE"); //+ document.querySelector("#host").value);
 }
 
 function restoreOptions() {
