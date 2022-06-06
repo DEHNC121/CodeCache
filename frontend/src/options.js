@@ -12,7 +12,7 @@ function saveOptions(e) {
 function restoreOptions() {
 
     function setCurrentChoice(result) {
-        document.querySelector("#host").value = result.color || "52.236.88.159:443";
+        document.querySelector("#host").value = result.host || "52.236.88.159:443";
     }
 
     function onError(error) {
