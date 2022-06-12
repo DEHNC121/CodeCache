@@ -12,11 +12,11 @@ const update_ans = (answs: Array<any>,) => {
     insert_answers(answs, document.getElementById("CodeCache-background"));
 }
 
-const set_remove_button = (button: HTMLButtonElement, query: string, ans: string) => {
+const set_remove_button = (button: HTMLButtonElement, query: string, qId: string, ans: string, aId: string) => {
 
     button.addEventListener("click", async e => {
 
-        let answers = await remove_ans(query, ans);
+        let answers = await remove_ans(query, qId, ans, aId);
 
         update_ans(answers);
     });
@@ -86,7 +86,7 @@ export const insert_answers = (answs: Array<any>, html_back: HTMLElement) => {
         let button = document.createElement('button');
         button.className = "remove-button-CodeCache";
         button.textContent = "remove";
-        set_remove_button(button, answs[a].question, answs[a].text);
+        set_remove_button(button, answs[a].question, answs[a].questionId, answs[a].text, answs[a].textId);
         div.appendChild(button);
 
         //html_back.appendChild(div);
