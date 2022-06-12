@@ -8,6 +8,7 @@ import java.util.*;
 public class ServerEngineImpl implements ServerEngine {
 
     SQLEngine engine;
+    Long MAX_ANSWERS_SIZE=5L;
 
     public ServerEngineImpl(SQLEngine engine) {
         this.engine = engine;
@@ -26,15 +27,13 @@ public class ServerEngineImpl implements ServerEngine {
     private List<RustAnswer> answerFormat(List<EngineQuestionAnswer> inList, ArrayList<Long> order) {
         var answers = new ArrayList<RustAnswer>();
 
-        for (var i = 0; i < order.size(); i++) {
-            answers.add(null);
-        }
-
-        for (var a : inList) {
-            for (var i = 0; i < order.size(); i++) {
-                if (Objects.equals(order.get(i), a.getQuestion().getId())) {
-                    answers.set(i, new RustAnswer(new ServerAnswer(a.getAnswer().getValue(),a.getAnswer().getId() ), new ServerQuestion(a.getQuestion().getFull(),a.getQuestion().getId())));
-                    break;
+        for (Long aLong : order) {
+            for (var a : inList) {
+                if (Objects.equals(aLong, a.getQuestion().getId())) {
+                    answers.add(new RustAnswer(new ServerAnswer(a.getAnswer().getValue(), a.getAnswer().getId()), new ServerQuestion(a.getQuestion().getFull(), a.getQuestion().getId())));
+                }
+                if (answers.size()==MAX_ANSWERS_SIZE){
+                    return answers;
                 }
             }
         }
