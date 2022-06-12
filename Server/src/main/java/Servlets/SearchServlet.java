@@ -19,6 +19,15 @@ public class SearchServlet extends HttpServlet{
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String question = request.getParameter("q");
+        answerJSON(question, response);
+    }
+
+    public static void answerJSON(String question, HttpServletResponse response) throws IOException {
+        if(question == null) {
+            System.out.println("question in null");
+            return;
+        }
+
         List<RustAnswer> answers = ServerEngineSingleton.getInstance().query(new ServerQuestion(question));
 
         System.out.println("Search list");

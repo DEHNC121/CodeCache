@@ -56,26 +56,9 @@ public class DeleteServlet extends HttpServlet {
                 .remove(new ServerQuestion(question, questionId), new ServerAnswer(text, textId));
 
 
-        List<RustAnswer> answers = ServerEngineSingleton.getInstance().query(new ServerQuestion(question));
-        int size = answers.size();
-
-
-        String json = "{\n";
-        json += "\"answers\" : [\n";
-        for(int i = 0; i < size; i++) {
-            json += "{ \"question\": " + JSONObject.quote(answers.get(i).getQuestion().getValue()) + ", ";
-            json += "\"questionId\": " + answers.get(i).getQuestion().getId() + ", ";
-            json += "\"text\": " + JSONObject.quote(answers.get(i).getAnswer().getValue()) + ", ";
-            json += "\"textId\": " + answers.get(i).getAnswer().getId() + " }";
-            if(i < size-1)
-                json += ",\n";
-            else
-                json += "\n";
-        }
-        json += "]\n";
-        json += "}\n";
-
-        PrintWriter out = response.getWriter();
-        out.println(json);
+        String q = request.getParameter("q");
+        if(q == null)
+            q = question;
+        SearchServlet.answerJSON(q, response);
     }
 }
