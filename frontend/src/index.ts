@@ -6,16 +6,16 @@ const parent_name = "rso";
 document.getElementById(parent_name).insertAdjacentHTML("afterbegin", html_inject());
 
 // get query parameters
-let query_params = get_query()
-console.log(query_params);
+let query = get_query()
+console.log(query);
 
 // set button behaviour
-set_add_button(document.getElementById("CodeCache-background"), query_params);
+set_add_button(document.getElementById("CodeCache-background"), query);
 
 //REST GET answers
-get_answers(query_params).then(response => {
+get_answers(query).then(response => {
     console.log(response);
-    insert_answers(response, document.getElementById("CodeCache-background"));
+    insert_answers(query, response, document.getElementById("CodeCache-background"));
 });
 
 

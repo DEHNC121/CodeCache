@@ -4,6 +4,7 @@
 - the rest is self-explanatory
 
 
+
 ### Frontend
 One can create their own frontend. It needn't even be an addon :)
 The server responds to all the following, with a json containing top 5 answers for a given query.

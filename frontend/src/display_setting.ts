@@ -2,39 +2,40 @@ import new_ans_html from './new_ans.html';
 import {add_ans, get_answers, get_query, remove_ans} from './rest';
 import {text} from "stream/consumers";
 
-const update_ans = (answs: Array<any>,) => {
+const update_ans = (answs: Array<any>, originalQuery: string) => {
     const ans = document.querySelectorAll('.ans-CodeCache');
 
     ans.forEach(a => {
         a.remove();
     });
 
-    insert_answers(answs, document.getElementById("CodeCache-background"));
+    insert_answers(originalQuery, answs, document.getElementById("CodeCache-background"));
 }
 
-const set_remove_button = (button: HTMLButtonElement, query: string, qId: string, ans: string, aId: string) => {
+const set_remove_button = (button: HTMLButtonElement, originalQuery: string, query: string, qId: string, ans: string, aId: string) => {
 
     button.addEventListener("click", async e => {
 
-        let answers = await remove_ans(query, qId, ans, aId);
+        let answers = await remove_ans(originalQuery, query, qId, ans, aId);
 
-        update_ans(answers);
+        update_ans(answers, originalQuery);
     });
 }
 
-export const set_save_button = (parent_div: HTMLElement, query: string) => {
+export const set_save_button = (parent_div: HTMLElement,  query: string) => {
     let button = document.getElementById("save-button-CodeCache") as HTMLButtonElement;
-
+    //TODO: the possibility to change the question
+    
     button.addEventListener("click", async e => {
 
         /* REST */
         let textfield = document.getElementById("CodeCache-textfield") as HTMLTextAreaElement;
-        let answers = await add_ans(query, textfield.value);
+        let answers = await add_ans(query, query, textfield.value);
 
         /* CLEANUP */
         parent_div.remove();
 
-        update_ans(answers);
+        update_ans(answers, query);
 
         let add = document.getElementById("add-button-CodeCache") as HTMLButtonElement;
         add.disabled = false;
@@ -60,7 +61,7 @@ export const set_add_button = (html_back: HTMLElement, query: string) => {
     });
 }
 
-export const insert_answers = (answs: Array<any>, html_back: HTMLElement) => {
+export const insert_answers = (originalQuery: string, answs: Array<any>, html_back: HTMLElement) => {
 
     let foot = document.getElementById("CodeCache-foot")
 
@@ -87,7 +88,7 @@ export const insert_answers = (answs: Array<any>, html_back: HTMLElement) => {
         let button = document.createElement('button');
         button.className = "remove-button-CodeCache";
         button.textContent = "remove";
-        set_remove_button(button, answs[a].question, answs[a].questionId, answs[a].text, answs[a].textId);
+        set_remove_button(button, originalQuery, answs[a].question, answs[a].questionId, answs[a].text, answs[a].textId);
         div.appendChild(button);
 
         //html_back.appendChild(div);

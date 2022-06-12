@@ -28,14 +28,14 @@ export const get_answers = async (query: string): Promise<Array<object>> => {
 
 
 
-export const add_ans = async (query: string, ans : string): Promise<Array<object>> => {
+export const add_ans = async (originalQuery: string, query: string, ans : string): Promise<Array<object>> => {
     console.log("ADD " + JSON.stringify({"question": query, "text": ans}));
 
     return HOSTpromise.then( async res => {
         let HOST = res.host;
         console.log(HOST);
 
-        const response = await fetch("http://" + HOST + "/add", {
+        const response = await fetch("http://" + HOST + "/add?q=" + originalQuery, {
                 method: 'POST',
                 body: JSON.stringify({"question": query, "text": ans})//.replace(/\\n/g,"\\n")
             }
@@ -46,7 +46,7 @@ export const add_ans = async (query: string, ans : string): Promise<Array<object
     //TODO: error???
 };
 
-export const remove_ans = async(query: string, qId: string, ans: string, aId: string): Promise<Array<object>> => {
+export const remove_ans = async(originalQuery: string, query: string, qId: string, ans: string, aId: string): Promise<Array<object>> => {
     console.log("REMOVE " + JSON.stringify({"question": query, "questionId" : qId, "text": ans, "textId": aId}));
 
     // POST + /delete
@@ -54,7 +54,7 @@ export const remove_ans = async(query: string, qId: string, ans: string, aId: st
         let HOST = res.host;
         console.log(HOST);
 
-        const response = await fetch("http://" + HOST + "/delete", {
+        const response = await fetch("http://" + HOST + "/delete?q=" + originalQuery , {
                 method: 'POST',
                 body: JSON.stringify({"question": query, "questionId" : qId, "text": ans, "textId": aId})
             }
