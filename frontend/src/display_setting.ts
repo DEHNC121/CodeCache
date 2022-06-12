@@ -47,11 +47,12 @@ export const set_add_button = (html_back: HTMLElement, query: string) => {
 
     button.addEventListener("click", e => {
         let foot = document.getElementById("CodeCache-foot");
+        let foot_inner = document.getElementById("CodeCache-inner-foot");
         let div = document.createElement('div');
         div.id = "add-ans-outer-div-CodeCache";
         div.insertAdjacentHTML("afterbegin", new_ans_html);
 
-        html_back.insertBefore(div, foot);
+        foot.insertBefore(div, foot_inner);
 
         button.disabled = true;
 
