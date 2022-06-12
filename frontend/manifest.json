@@ -1,0 +1,34 @@
+{
+
+  "manifest_version": 2,
+  "name": "CodeCache",
+  "version": "1.0",
+  "devtools_page": "devtools-page.html",
+
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/*"],
+      "js": ["dist/bundle.js"],
+      "css": ["src/styles.css"]
+    }
+  ],
+
+  "permissions": [
+    "http://52.236.88.159/*",
+    "storage"
+  ],
+
+  "options_ui": {
+    "page": "src/options.html",
+    "browser_style": true
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "code@cache.com"
+    }
+  }
+
+
+}
