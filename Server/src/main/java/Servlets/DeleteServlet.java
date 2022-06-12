@@ -2,7 +2,11 @@ package Servlets;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
+
+import ServerRequests.RustAnswer;
 import ServerRequests.ServerEngineSingleton;
 import ServerRequests.ServerQuestion;
 import ServerRequests.ServerAnswer;
@@ -43,13 +47,35 @@ public class DeleteServlet extends HttpServlet {
         Long textId = jsonObject.getLong("textId");
 
         System.out.println(question);
+        System.out.println(questionId);
         System.out.println(text);
+        System.out.println(textId);
 
 
         ServerEngineSingleton.getInstance()
                 .remove(new ServerQuestion(question, questionId), new ServerAnswer(text, textId));
 
 
-        SearchServlet.sendJSON(response, question);
+        List<RustAnswer> answers = ServerEngineSingleton.getInstance().query(new ServerQuestion(question));
+        int size = answers.size();
+
+
+        String json = "{\n";
+        json += "\"answers\" : [\n";
+        for(int i = 0; i < size; i++) {
+            json += "{ \"question\": " + JSONObject.quote(answers.get(i).getQuestion().getValue()) + ", ";
+            json += "\"questionId\": " + answers.get(i).getQuestion().getId() + ", ";
+            json += "\"text\": " + JSONObject.quote(answers.get(i).getAnswer().getValue()) + ", ";
+            json += "\"textId\": " + answers.get(i).getAnswer().getId() + " }";
+            if(i < size-1)
+                json += ",\n";
+            else
+                json += "\n";
+        }
+        json += "]\n";
+        json += "}\n";
+
+        PrintWriter out = response.getWriter();
+        out.println(json);
     }
 }
