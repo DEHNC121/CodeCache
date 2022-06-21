@@ -11,8 +11,7 @@ public class Run {
     public static void main(String[] args) {
         SQLFactory sqlFactory = new SQLFactory();
         SQLEngineImpl sqlEngine = new SQLEngineImpl(sqlFactory);
-        var serverEngineImpl=new ServerEngineImpl(sqlEngine);
-
+        var serverEngineImpl = new ServerEngineImpl(sqlEngine);
 
         serverEngineImpl.add(new ServerQuestion("czemu tak jest"), new ServerAnswer("1"));
         serverEngineImpl.add(new ServerQuestion("czemu nei"), new ServerAnswer("2"));

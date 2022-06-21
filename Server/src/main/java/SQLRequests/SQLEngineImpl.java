@@ -20,26 +20,25 @@ public class SQLEngineImpl implements SQLEngine {
     private final SessionFactory sessionFactory;
     private final SQLFactory sqlFactory;
 
-    public SQLEngineImpl(SQLFactory sqlFactory){
+    public SQLEngineImpl(SQLFactory sqlFactory) {
         this.sqlFactory = sqlFactory;
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure() // configures settings from hibernate.cfg.xml
                 .build();
         try {
-            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-        }
-        catch (Exception e) {
+            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        } catch (Exception e) {
             // The registry would be destroyed by the SessionFactory, but we had troubles building the SessionFactory
             // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy( registry );
+            StandardServiceRegistryBuilder.destroy(registry);
             throw e;
         }
     }
 
-    private SQLKeyword saveKeyword(SQLKeyword keyword, Session session){
+    private SQLKeyword saveKeyword(SQLKeyword keyword, Session session) {
         var temp = session.createQuery(
-                "from SQLKeyword " +
-                        "where value=:v")
+                        "from SQLKeyword " +
+                                "where value=:v")
                 .setParameter("v", keyword.getValue())
                 .uniqueResultOptional();
         if (temp.isPresent())
@@ -48,11 +47,11 @@ public class SQLEngineImpl implements SQLEngine {
         return keyword;
     }
 
-    private SQLKeywordPosition saveKeywordPosition(SQLKeywordPosition keywordPosition, Session session){
+    private SQLKeywordPosition saveKeywordPosition(SQLKeywordPosition keywordPosition, Session session) {
         keywordPosition.setKeyword(saveKeyword(keywordPosition.getKeyword(), session));
         var temp = session.createQuery(
-                "from SQLKeywordPosition" +
-                        " where keyword =:k and position =:p")
+                        "from SQLKeywordPosition" +
+                                " where keyword =:k and position =:p")
                 .setParameter("k", keywordPosition.getKeyword())
                 .setParameter("p", keywordPosition.getPosition())
                 .uniqueResultOptional();
@@ -62,30 +61,30 @@ public class SQLEngineImpl implements SQLEngine {
         return keywordPosition;
     }
 
-    private SQLQuestion saveQuestion(SQLQuestion question, Session session){
+    private SQLQuestion saveQuestion(SQLQuestion question, Session session) {
         HashSet<SQLKeywordPosition> tempSet = new HashSet<>();
-        for (SQLKeywordPosition keywordPosition: question.getKeywords()){
+        for (SQLKeywordPosition keywordPosition : question.getKeywords()) {
             tempSet.add(saveKeywordPosition(keywordPosition, session));
         }
         question.setKeywords(tempSet);
 
         var temp = session.createQuery(
-                "select q from SQLQuestion q join q.keywords x " +
-                        "where x in (:k)")
+                        "select q from SQLQuestion q join q.keywords x " +
+                                "where x in (:k)")
                 .setParameterList("k", question.getKeywords())
                 .list();
-        for (var q: temp){
-            if (((SQLQuestion)q).getKeywords().equals(question.getKeywords()))
-                return (SQLQuestion)q;
+        for (var q : temp) {
+            if (((SQLQuestion) q).getKeywords().equals(question.getKeywords()))
+                return (SQLQuestion) q;
         }
         session.save(question);
         return question;
     }
 
-    private SQLAnswer saveAnswer(SQLAnswer answer, Session session){
+    private SQLAnswer saveAnswer(SQLAnswer answer, Session session) {
         var temp = session.createQuery(
-                "from SQLAnswer " +
-                        "where value=:v")
+                        "from SQLAnswer " +
+                                "where value=:v")
                 .setParameter("v", answer.getValue())
                 .uniqueResultOptional();
         if (temp.isPresent())
@@ -116,9 +115,9 @@ public class SQLEngineImpl implements SQLEngine {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<EngineQuestionAnswer> result = session.createQuery(
-                "select new SQLEngine.EngineQuestionAnswer(question, answers) " +
-                        "from SQLQuestion question join question.answers answers " +
-                        "where question.id in (:q)")
+                        "select new SQLEngine.EngineQuestionAnswer(question, answers) " +
+                                "from SQLQuestion question join question.answers answers " +
+                                "where question.id in (:q)")
                 .setParameter("q", questionIds)
                 .list();
         session.getTransaction().commit();
@@ -132,9 +131,9 @@ public class SQLEngineImpl implements SQLEngine {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<EngineQuestionKeyword> result = session.createQuery(
-                "select new SQLEngine.EngineQuestionKeyword(question, keywords.keyword, keywords.position) " +
-                        "from SQLQuestion question join question.keywords keywords " +
-                        "where keywords.keyword.value in (:l)")
+                        "select new SQLEngine.EngineQuestionKeyword(question, keywords.keyword, keywords.position) " +
+                                "from SQLQuestion question join question.keywords keywords " +
+                                "where keywords.keyword.value in (:l)")
                 .setParameterList("l", keywords)
                 .list();
         session.getTransaction().commit();
@@ -143,15 +142,15 @@ public class SQLEngineImpl implements SQLEngine {
     }
 
     @Override
-    public int remove(ServerQuestion serverQuestion, ServerAnswer serverAnswer){
+    public int remove(ServerQuestion serverQuestion, ServerAnswer serverAnswer) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         var tempQuestion = session.createQuery(
-                                "from SQLQuestion where id = :qId")
+                        "from SQLQuestion where id = :qId")
                 .setParameter("qId", serverQuestion.getId())
                 .uniqueResultOptional();
-        if (tempQuestion.isEmpty() || !((SQLQuestion)tempQuestion.get()).getFull().equals(serverQuestion.getValue())){
+        if (tempQuestion.isEmpty() || !((SQLQuestion) tempQuestion.get()).getFull().equals(serverQuestion.getValue())) {
             session.getTransaction().commit();
             session.close();
             return -1;
@@ -161,7 +160,7 @@ public class SQLEngineImpl implements SQLEngine {
                         "from SQLAnswer where id = :aId")
                 .setParameter("aId", serverAnswer.getId())
                 .uniqueResultOptional();
-        if (tempAnswer.isEmpty() || !((SQLAnswer)tempAnswer.get()).getValue().equals(serverAnswer.getValue())){
+        if (tempAnswer.isEmpty() || !((SQLAnswer) tempAnswer.get()).getValue().equals(serverAnswer.getValue())) {
             session.getTransaction().commit();
             session.close();
             return -1;

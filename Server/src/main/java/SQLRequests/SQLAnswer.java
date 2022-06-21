@@ -22,18 +22,23 @@ public class SQLAnswer {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getValue() {
         return value;
     }
+
     public void setValue(String value) {
         this.value = value;
     }
+
     public Set<SQLQuestion> getQuestions() {
         return questions;
     }
+
     public void setQuestions(Set<SQLQuestion> questions) {
         this.questions = questions;
     }

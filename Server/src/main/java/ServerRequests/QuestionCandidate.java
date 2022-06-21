@@ -10,10 +10,9 @@ public class QuestionCandidate {
     private final Long id;
     private Double score;
     private final List<ServerKeyword> keywords;
-    private final Map<String,Long> exist;
-    private final Map<String,Map<Long, Long>> correctPositionNext;
-    private final Map<String,Map<Long, Long>> correctPositionPrev;
-
+    private final Map<String, Long> exist;
+    private final Map<String, Map<Long, Long>> correctPositionNext;
+    private final Map<String, Map<Long, Long>> correctPositionPrev;
 
     public QuestionCandidate(Long id) {
         this.id = id;
@@ -27,7 +26,7 @@ public class QuestionCandidate {
     public void add(EngineQuestionKeyword keyword) {
         var skw = new ServerKeyword(keyword.getPosition(), keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
-        if (!exist.containsKey( keyword.getKeyword())) {
+        if (!exist.containsKey(keyword.getKeyword())) {
             exist.put(keyword.getKeyword(), 0L);
             correctPositionNext.put(keyword.getKeyword(), new HashMap<>());
             correctPositionPrev.put(keyword.getKeyword(), new HashMap<>());
@@ -37,9 +36,9 @@ public class QuestionCandidate {
     public void add(EngineQuestionKeyword keyword, Long position) {
         var skw = new ServerKeyword(position, keyword.getKeyword(), 1D / keyword.getQuestion().getKeywordCount());
         keywords.add(skw);
-        if (!exist.containsKey( keyword.getKeyword())) {
+        if (!exist.containsKey(keyword.getKeyword())) {
             exist.put(keyword.getKeyword(), 0L);
-            correctPositionNext.put(keyword.getKeyword(),new HashMap<>());
+            correctPositionNext.put(keyword.getKeyword(), new HashMap<>());
             correctPositionPrev.put(keyword.getKeyword(), new HashMap<>());
 
         }
@@ -64,10 +63,11 @@ public class QuestionCandidate {
 
     public void existUp(ServerKeyword keyword) {
         this.score += keyword.getBasicScore();
-        exist.put(keyword.getKeyword(), exist.get(keyword.getKeyword())+1L);
+        exist.put(keyword.getKeyword(), exist.get(keyword.getKeyword()) + 1L);
     }
+
     public void positionUp(ServerKeyword keyword) {
-        this.score += keyword.getBasicScore()/2;
+        this.score += keyword.getBasicScore() / 2;
     }
 
     public Double getScore() {

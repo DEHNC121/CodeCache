@@ -12,6 +12,7 @@ public class ServerQuestion {
         this.value = value.toLowerCase();
         this.id = id;
     }
+
     public ServerQuestion(String value) {
         this.value = value.toLowerCase();
         this.id = -1L;

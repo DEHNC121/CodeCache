@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/search")
-public class SearchServlet extends HttpServlet{
+public class SearchServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -21,13 +21,12 @@ public class SearchServlet extends HttpServlet{
         List<RustAnswer> answers = SQLEngineSingleton.getInstance().query(new ServerQuestion(question));
         int size = answers.size();
 
-
         String json = "{\n";
         json += "\"answers\" : [\n";
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             json += "{ \"question\": \"" + answers.get(i).getQuestion().getValue() + "\", ";
             json += "\"text\": \"" + answers.get(i).getAnswer().getValue() + "\" }";
-            if(i < size-1)
+            if (i < size - 1)
                 json += ",\n";
             else
                 json += "\n";

@@ -20,9 +20,9 @@ public class NoteServlet extends HttpServlet {
 
         String json = "{\n";
         json += "\"answers\" : [{\n";
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             json += "\"text\": \"Our random number is " + Double.toString(Math.random()) + "\"\n";
-            if(i < 2)
+            if (i < 2)
                 json += "}, {\n";
             else
                 json += "}]\n";

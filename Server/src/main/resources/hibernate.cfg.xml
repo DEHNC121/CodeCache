@@ -11,7 +11,6 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/codecache</property>
 
 
-
         <property name="connection_pool_size">1</property>
 
         <property name="hbm2ddl.auto">create</property>
@@ -19,10 +18,9 @@
         <property name="show_sql">true</property>
 
 
-
         <mapping class="SQLRequests.SQLQuestion"/>
         <mapping class="SQLRequests.SQLAnswer"/>
-<!--        <mapping class="SQLEngine.EngineQuestionAnswer"/>-->
+        <!--        <mapping class="SQLEngine.EngineQuestionAnswer"/>-->
         <mapping class="SQLRequests.SQLKeywordPosition"/>
         <mapping class="SQLRequests.SQLKeyword"/>
 

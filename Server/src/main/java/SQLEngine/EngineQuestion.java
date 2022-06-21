@@ -7,7 +7,7 @@ public class EngineQuestion {
     private final Long Id;
     private final Long keywordCount;
 
-    public EngineQuestion(SQLQuestion sqlQuestion){
+    public EngineQuestion(SQLQuestion sqlQuestion) {
         full = sqlQuestion.getFull();
         Id = sqlQuestion.getId();
         keywordCount = sqlQuestion.getKeywordCount();
@@ -16,9 +16,11 @@ public class EngineQuestion {
     public Long getId() {
         return Id;
     }
+
     public String getFull() {
         return full;
     }
+
     public Long getKeywordCount() {
         return keywordCount;
     }

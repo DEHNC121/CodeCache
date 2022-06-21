@@ -16,27 +16,27 @@ public class SQLQuestion {
     @Column(name = "keyword_count", nullable = false)
     private Long keywordCount;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "question_answer",
-            joinColumns = { @JoinColumn(name = "question_id") },
-            inverseJoinColumns = { @JoinColumn(name = "answer_id") }
+            joinColumns = {@JoinColumn(name = "question_id")},
+            inverseJoinColumns = {@JoinColumn(name = "answer_id")}
     )
     Set<SQLAnswer> answers = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "question_keyword_position",
-            joinColumns = { @JoinColumn(name = "question_id") },
-            inverseJoinColumns = { @JoinColumn(name = "keyword_position_id") }
+            joinColumns = {@JoinColumn(name = "question_id")},
+            inverseJoinColumns = {@JoinColumn(name = "keyword_position_id")}
     )
     Set<SQLKeywordPosition> keywords = new HashSet<>();
 
-    public String getFull(){
+    public String getFull() {
         ArrayList<String> temp = new ArrayList<String>(keywordCount.intValue());
-        while(temp.size() < keywordCount.intValue())
+        while (temp.size() < keywordCount.intValue())
             temp.add("");
-        for (var keywordPosition: keywords){
+        for (var keywordPosition : keywords) {
             temp.set(keywordPosition.getPosition().intValue(), keywordPosition.getKeyword().getValue());
         }
         return String.join(" ", temp);
@@ -45,24 +45,31 @@ public class SQLQuestion {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Long getKeywordCount() {
         return keywordCount;
     }
+
     public void setKeywordCount(Long keywordNumber) {
         this.keywordCount = keywordNumber;
     }
+
     public Set<SQLAnswer> getAnswers() {
         return answers;
     }
+
     public void setAnswers(Set<SQLAnswer> answers) {
         this.answers = answers;
     }
+
     public Set<SQLKeywordPosition> getKeywords() {
         return keywords;
     }
+
     public void setKeywords(Set<SQLKeywordPosition> keywords) {
         this.keywords = keywords;
     }

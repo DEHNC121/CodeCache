@@ -1,8 +1,11 @@
 import java.net.URL;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-/** Starts up a server that serves static files and annotated servlets. */
+/**
+ * Starts up a server that serves static files and annotated servlets.
+ */
 public class ServerMain {
 
     public static void main(String[] args) throws Exception {

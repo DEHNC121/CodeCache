@@ -12,6 +12,7 @@ public class SQLEngineSingleton {
     private ServerEngine serverEngine;
 
     private static SQLEngineSingleton instance = new SQLEngineSingleton();
+
     public static SQLEngineSingleton getInstance() {
         return instance;
     }

@@ -32,7 +32,7 @@ public class AddServlet extends HttpServlet {
         JSONObject jsonObject = null;
         try {
 //            jsonObject =  HTTP.toJSONObject(jb.toString());
-            jsonObject =  new JSONObject(jb.toString());
+            jsonObject = new JSONObject(jb.toString());
         } catch (JSONException e) {
             // crash and burn
             throw new IOException("Error parsing JSON request string");

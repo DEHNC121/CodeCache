@@ -5,7 +5,7 @@ import SQLRequests.SQLQuestion;
 
 public class EngineQuestionAnswer {
 
-    public EngineQuestionAnswer(SQLQuestion question, SQLAnswer answer){
+    public EngineQuestionAnswer(SQLQuestion question, SQLAnswer answer) {
         this.question = new EngineQuestion(question);
         this.answer = new EngineAnswer(answer);
     }
@@ -16,6 +16,7 @@ public class EngineQuestionAnswer {
     public EngineAnswer getAnswer() {
         return answer;
     }
+
     public EngineQuestion getQuestion() {
         return question;
     }
