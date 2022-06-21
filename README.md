@@ -10,7 +10,7 @@ Listen. Remembering how to use ```atoi``` and ```stoi``` is just not something w
 
 ### How it works - the addon
 
-Do a google search $\rightarrow$ find a fitting answer $\rightarrow$ save your answer to CodeCache addon $\rightarrow$ next time you're searching CodeCache will display your answer at the top of search results.
+Do a google search &rarr; find a fitting answer &rarr; save your answer to CodeCache addon &rarr; next time you're searching CodeCache will display your answer at the top of search results.
 
 CodeCache displays answers for queries similar to the one provided. They are sorted by resemblance and top 5 are displayed.
 
