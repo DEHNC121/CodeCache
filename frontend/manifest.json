@@ -15,7 +15,7 @@
   ],
 
   "permissions": [
-    "http://52.236.88.159/*",
+    "<all_urls>",
     "storage"
   ],
 
